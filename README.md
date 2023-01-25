@@ -24,4 +24,12 @@ and combines it with my love for software programming. I want to create this app
 allows not only myself, but others to keep track of their favourite teams and players and also have a tool that will allow users to improve their NBA 
 fantasy experience. 
 
+
+
+## User Stories
+* As a user, I want to be able to create a new fanatasy team and add NBA players to it 
+* As a user, I want to be able to create a slot for an existing NBA player where I can add player statistics 
+* As a user, I want to be able to select an existing NBA team and view the players currently on the roster
+* As a user, I want to be able to create an NBA playoff bracket, where I can add my predicited mathchups for each round of the playoffs and save my bracket. 
+
   
