@@ -14,11 +14,23 @@ public class FantasyNbaTeam {
         numberOfPlayers = 0;
         playersOnTeam = new ArrayList<Player>();
     }
+
     public FantasyNbaTeam addPlayerToFantasyTeam(FantasyNbaTeam fnt, Player p) {
         if (fnt.numberOfPlayers <= 12) {
             playersOnTeam.add(p);
         }
-            return fnt;
+        return fnt;
     }
 
+    public String getFantasyTeamName() {
+        return fantasyTeam;
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public ArrayList<Player> getPlayersOnTeam() {
+        return playersOnTeam;
+    }
 }

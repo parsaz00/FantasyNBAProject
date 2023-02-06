@@ -1,6 +1,6 @@
 package model;
 
-// Represents a NBA player, having a name (first and last), a jersey number, and NBA team.
+// Represents an NBA player, having a name (first and last), a jersey number, and NBA team.
 public class Player {
     private String name;
     private int jerseyNumber;
