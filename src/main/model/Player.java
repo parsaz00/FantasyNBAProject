@@ -20,9 +20,11 @@ public class Player {
     public String getName() {
         return name;
     }
+
     public int getJerseyNumber() {
         return jerseyNumber;
     }
+
     public String getTeam() {
         return nbaTeam;
     }

@@ -2,24 +2,28 @@ package model;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 // Class representing a Fantasy NBA team
 public class FantasyNbaTeam {
+    public static final int MAX_NUM_PLAYERS = 12;
     private String fantasyTeam;
     private int numberOfPlayers;
-    private ArrayList<Player> playersOnTeam;
+    private LinkedList<Player> playersOnTeam;
 
     public FantasyNbaTeam(String fantasyTeamName) {
         fantasyTeam = fantasyTeamName;
         numberOfPlayers = 0;
-        playersOnTeam = new ArrayList<Player>();
+        playersOnTeam = new LinkedList<>();
     }
 
-    public FantasyNbaTeam addPlayerToFantasyTeam(FantasyNbaTeam fnt, Player p) {
-        if (fnt.numberOfPlayers <= 12) {
-            playersOnTeam.add(p);
+    public boolean addPlayerToFantasyTeam(Player p) {
+        if (this.numberOfPlayers <= MAX_NUM_PLAYERS) {
+            this.playersOnTeam.add(p);
+            numberOfPlayers += 1;
+            return true;
         }
-        return fnt;
+        return false;
     }
 
     public String getFantasyTeamName() {
@@ -30,7 +34,7 @@ public class FantasyNbaTeam {
         return numberOfPlayers;
     }
 
-    public ArrayList<Player> getPlayersOnTeam() {
+    public LinkedList<Player> getPlayersOnTeam() {
         return playersOnTeam;
     }
 }

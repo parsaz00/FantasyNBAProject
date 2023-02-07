@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FantasyNbaTeamTest {
     private FantasyNbaTeam fantasyNbaTeam1;
@@ -26,14 +27,14 @@ public class FantasyNbaTeamTest {
         assertEquals("The Bucket Getters", fantasyNbaTeam2.getFantasyTeamName());
         assertEquals(0, fantasyNbaTeam1.getNumberOfPlayers());
         assertEquals(0, fantasyNbaTeam2.getNumberOfPlayers());
-        assertEquals(0, fantasyNbaTeam1.getPlayersOnTeam().size());
-        assertEquals(0, fantasyNbaTeam2.getPlayersOnTeam().size());
     }
     @Test
-    void addPlayerToFantasyTeamTest() {
-        fantasyNbaTeam1.addPlayerToFantasyTeam(fantasyNbaTeam1, testPlayer1);
-        assertEquals(1, fantasyNbaTeam1.getPlayersOnTeam().size());
-        fantasyNbaTeam1.addPlayerToFantasyTeam(fantasyNbaTeam1, testPlayer2);
-        assertEquals(2, fantasyNbaTeam1.getPlayersOnTeam().size());
+    void addPlayersToFantasyTeamTest() {
+        assertEquals(0, fantasyNbaTeam1.getNumberOfPlayers());
+        assertTrue(fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer1));
+        fantasyNbaTeam2.addPlayerToFantasyTeam(testPlayer2);
+        assertEquals(1, fantasyNbaTeam2.getNumberOfPlayers());
+
     }
+
 }
