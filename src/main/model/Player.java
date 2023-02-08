@@ -5,6 +5,9 @@ public class Player {
     private String name;
     private int jerseyNumber;
     private String nbaTeam;
+    private int points;
+    private int rebounds;
+    private int assists;
 
     /*
      * REQUIRES: playerName and teamName has non-zero length, jerseyNum >= 0, teamName is a current NBA team
@@ -15,6 +18,9 @@ public class Player {
         name = playerName;
         jerseyNumber = jerseyNum;
         nbaTeam = teamName;
+        points = 0;
+        rebounds = 0;
+        assists = 0;
     }
 
     public String getName() {
@@ -28,4 +34,30 @@ public class Player {
     public String getTeam() {
         return nbaTeam;
     }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public int getRebounds() {
+        return rebounds;
+    }
+
+    public int getAssists() {
+        return assists;
+    }
+
+    public void addPoints(int p) {
+        points += p;
+    }
+
+    public void addRebounds(int r) {
+        rebounds += r;
+    }
+
+    public void addAssists(int a) {
+        assists += a;
+    }
+
+
 }

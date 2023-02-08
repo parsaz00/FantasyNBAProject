@@ -20,5 +20,29 @@ class PlayerTest {
         assertEquals(77, testPlayer2.getJerseyNumber());
         assertEquals("Lakers", testPlayer1.getTeam());
         assertEquals("Mavericks", testPlayer2.getTeam());
+        assertEquals(0, testPlayer1.getAssists());
+        assertEquals(0, testPlayer2.getPoints());
+        assertEquals(0, testPlayer1.getRebounds());
+    }
+    @Test
+    void addPointsTest() {
+        testPlayer1.addPoints(1);
+        assertEquals(1, testPlayer1.getPoints());
+        testPlayer2.addPoints(100);
+        assertEquals(100, testPlayer2.getPoints());
+    }
+    @Test
+    void addAssistsTest() {
+        testPlayer1.addAssists(10);
+        assertEquals(10, testPlayer1.getAssists());
+        testPlayer2.addAssists(6);
+        assertEquals(6, testPlayer2.getAssists());
+    }
+    @Test
+    void addReboundsTest() {
+        testPlayer1.addRebounds(53);
+        assertEquals(53, testPlayer1.getRebounds());
+        testPlayer2.addRebounds(13);
+        assertEquals(13, testPlayer2.getRebounds());
     }
 }
