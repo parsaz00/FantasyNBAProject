@@ -13,6 +13,27 @@ class PlayerTest {
         testPlayer2 = new Player("Luka Doncic", 77, "Mavericks");
     }
     @Test
+    void setNameTest() {
+        testPlayer1.setName("jim");
+        assertEquals("jim", testPlayer1.getName());
+        testPlayer1.setName("Bob");
+        assertEquals("Bob", testPlayer1.getName());
+    }
+    @Test
+    void setJerseyNumberTest() {
+        testPlayer1.setJerseyNumber(8);
+        assertEquals(8, testPlayer1.getJerseyNumber());
+        testPlayer2.setJerseyNumber(42);
+        assertEquals(42, testPlayer2.getJerseyNumber());
+    }
+    @Test
+    void setTeamNameTest() {
+        testPlayer1.setTeamName("76ers");
+        assertEquals("76ers", testPlayer1.getTeam());
+        testPlayer2.setTeamName("Grizzlies");
+        assertEquals("Grizzlies", testPlayer2.getTeam());
+    }
+    @Test
     void constructorTest() {
         assertEquals("Lebron James", testPlayer1.getName());
         assertEquals("Luka Doncic", testPlayer2.getName());

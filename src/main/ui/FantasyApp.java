@@ -2,11 +2,11 @@ package ui;
 
 import model.FantasyNbaTeam;
 import model.Player;
+
 import java.util.Objects;
 import java.util.Scanner;
 
 public class FantasyApp {
-    private Player player;
     private FantasyNbaTeam team;
     private Scanner input;
 
@@ -47,14 +47,14 @@ public class FantasyApp {
         } else if (command.equals("ct")) {
             createNewFantasyTeam();
         } else if (command.equals("apt")) {
-            addPlayerToFantasyTeam();
+            addPlayerToTeam();
         } else {
             System.out.println("Selection not valid");
         }
     }
 
     private void init() {
-        player = new Player("", 0, "");
+        //player = new Player("", 0, "");
         team = new FantasyNbaTeam("");
         input = new Scanner(System.in);
         input.useDelimiter("\n");
@@ -68,20 +68,22 @@ public class FantasyApp {
         System.out.println("\tq -> quit");
     }
 
-    private void createNewPlayer() {
+    private Player createNewPlayer() {
+        Player pl = new Player("", 0, "");
         Scanner sc1 = new Scanner(System.in);
         Scanner sc2 = new Scanner(System.in);
         Scanner sc3 = new Scanner(System.in);
         System.out.println("Enter a player name");
         String pname = sc1.nextLine();
-        player.setName(pname);
+        pl.setName(pname);
         System.out.println("Enter player jersey number");
         int pnum = sc2.nextInt();
-        player.setJerseyNumber(pnum);
+        pl.setJerseyNumber(pnum);
         System.out.println("Enter player's team name");
         String tname = sc3.nextLine();
-        player.setTeamName(tname);
-        System.out.println(player.getName() + " " + player.getJerseyNumber() + " " + player.getTeam());
+        pl.setTeamName(tname);
+        System.out.println(pl.getName() + " " + pl.getJerseyNumber() + " " + pl.getTeam());
+        return pl;
 
     }
 
@@ -95,17 +97,25 @@ public class FantasyApp {
         System.out.println(team.getFantasyTeamName());
     }
 
-    private void addPlayerToFantasyTeam() {
-        createNewPlayer();
-        createNewFantasyTeam();
-        System.out.println("Would you like to add this player to your fantasy team? Reply yes or no");
-        Scanner sc = new Scanner(System.in);
-        String answer = sc.nextLine();
+    private void addPlayerToTeam() {
+        System.out.println("Would you like to add a player to the fantasy team?"
+                +
+                " Reply yes to do so, no to stop adding players");
+        Scanner sc2 = new Scanner(System.in);
+        String answer = sc2.nextLine();
         if (Objects.equals(answer, "yes")) {
-            team.addPlayerToFantasyTeam(player);
-            System.out.println(player.getName() + " has been added to " + team.getFantasyTeamName());
+            team.addPlayerToFantasyTeam(createNewPlayer());
+            System.out.println("Would you like to add another player");
+            Scanner sc3 = new Scanner(System.in);
+            String answer1 = sc3.nextLine();
+            if ((Objects.equals(answer1, "yes"))) {
+                addPlayerToTeam();
+            } else {
+                System.out.println(team.getPlayersOnTeam());
+            }
         } else {
-            System.out.println("Ok, we won't add them!");
+            System.out.println("Ok we won't add anyone to the team");
+            System.out.println(team.getPlayersOnTeam());
         }
     }
 

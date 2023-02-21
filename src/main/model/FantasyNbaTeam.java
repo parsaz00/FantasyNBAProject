@@ -2,7 +2,7 @@ package model;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 // Class representing a Fantasy NBA team
@@ -44,8 +44,12 @@ public class FantasyNbaTeam {
         return numberOfPlayers;
     }
 
-    public ArrayList<Player> getPlayersOnTeam() {
-        return playersOnTeam;
+    public List<String> getPlayersOnTeam() {
+        List<String> playersOnFTeam = new ArrayList<>();
+        for (Player playa: playersOnTeam) {
+            playersOnFTeam.add(playa.getName());
+        }
+        return playersOnFTeam;
     }
 
     public void setFantasyTeamName(String name) {
