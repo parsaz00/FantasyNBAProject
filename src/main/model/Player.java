@@ -1,6 +1,7 @@
 package model;
 
-// Represents an NBA player, having a name (first and last), a jersey number, and NBA team.
+// Represents an NBA player, having a name (first and last), a jersey number, NBA team
+//  and statistics: Points, Rebounds and Assists.
 public class Player {
     private String name;
     private int jerseyNumber;
@@ -27,13 +28,26 @@ public class Player {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getJerseyNumber() {
         return jerseyNumber;
+    }
+
+    public void setJerseyNumber(int number) {
+        this.jerseyNumber = number;
     }
 
     public String getTeam() {
         return nbaTeam;
     }
+
+    public void setTeamName(String teamName) {
+        this.nbaTeam = teamName;
+    }
+
 
     public int getPoints() {
         return points;

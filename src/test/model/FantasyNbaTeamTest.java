@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -35,6 +37,22 @@ public class FantasyNbaTeamTest {
         fantasyNbaTeam2.addPlayerToFantasyTeam(testPlayer2);
         assertEquals(1, fantasyNbaTeam2.getNumberOfPlayers());
 
+    }
+    @Test
+    void findPlayerOnTeamTest() {
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer1);
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2);
+        assertEquals(testPlayer1, fantasyNbaTeam1.findPlayerOnTeam("Lebron James"));
+        assertEquals(testPlayer2, fantasyNbaTeam1.findPlayerOnTeam("Luka Doncic"));
+        assertEquals(null, fantasyNbaTeam2.findPlayerOnTeam("Michael Jordan"));
+        assertEquals(null, fantasyNbaTeam1.findPlayerOnTeam("Anthony Davis"));
+    }
+
+    @Test
+    void getPlayersOnTeamTest() {
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer1);
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2);
+        //TODO have to figure this test out!
     }
 
 }
