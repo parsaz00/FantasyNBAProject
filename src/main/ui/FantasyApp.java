@@ -53,6 +53,8 @@ public class FantasyApp {
             displayPlayers();
         } else if (command.equals("as")) {
             addStatistics();
+        } else if (command.equals("vps")) {
+            viewStatistics();
         } else {
             System.out.println("Selection not valid");
         }
@@ -72,8 +74,10 @@ public class FantasyApp {
         System.out.println("\tcp -> create player");
         System.out.println("\tct -> new team");
         System.out.println("\tapt -> add a player to a fantasy team");
+        System.out.println("Functions below only work if players have already been added to your fantasy team");
         System.out.println("\tas -> add statistics for player on your fantasy team");
         System.out.println("\tvp -> view players on fantasy team");
+        System.out.println("\tvps -> view player stats");
         System.out.println("\tq -> quit");
     }
 
@@ -125,13 +129,13 @@ public class FantasyApp {
     }
 
     // EFFECTS: displays the name of the players currently on the fantasy team roster
-    void displayPlayers() {
+    private void displayPlayers() {
         System.out.println(team.getPlayersOnTeam());
     }
 
     // EFFECTS: finds player on fantasy team based on user input, then adds points, rebounds, and assists for that
     //          player, again based on user input.
-    void addStatistics() {
+    private void addStatistics() {
         System.out.println("Enter player who you want to add statistics for");
         Scanner sc = new Scanner(System.in);
         String playerName = sc.nextLine();
@@ -154,4 +158,14 @@ public class FantasyApp {
 
     }
 
+        // REQUIRES: playerName must be a player already added to the team.
+        // EFFECTS: returns inputted players stats: points, rebounds, and assists
+    private void viewStatistics() {
+        System.out.println("Enter players name");
+        Scanner sc = new Scanner(System.in);
+        String playerName = sc.nextLine();
+        Player statsPlayer = team.findPlayerOnTeam(playerName);
+        System.out.println("Points: " + statsPlayer.getPoints() + " Rebounds: " + statsPlayer.getRebounds()
+                + " Assists: "  + statsPlayer.getAssists());
+    }
 }
