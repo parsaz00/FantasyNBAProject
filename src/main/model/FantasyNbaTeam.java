@@ -1,6 +1,5 @@
 package model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,12 +11,20 @@ public class FantasyNbaTeam {
     private int numberOfPlayers;
     private ArrayList<Player> playersOnTeam;
 
+    // REQUIRES: fantasyTeamName has non-zero length
+    // EFFECTS: creates a new fantasy team, with fantasy team name set to fantasyTeamName and
+    //          an empty roster (i.e., no players on the team)
     public FantasyNbaTeam(String fantasyTeamName) {
         fantasyTeam = fantasyTeamName;
         numberOfPlayers = 0;
         playersOnTeam = new ArrayList<>();
     }
 
+    // REQUIRES: p has to be a valid player that's already been created
+    // MODIFIES: this
+    // EFFECTS: if the fantasy team has less than MAX_NUM_PLAYERS, add the (p)layer to the fantasy team, increments the
+    //          number of players on the team by 1, and returns true. If the fantasy team has >= MAX_NUM_PLAYERS
+    //          number of players, does NOT add the (p)layer and returns false.
     public boolean addPlayerToFantasyTeam(Player p) {
         if (this.numberOfPlayers < MAX_NUM_PLAYERS) {
             this.playersOnTeam.add(p);
@@ -27,7 +34,9 @@ public class FantasyNbaTeam {
         return false;
     }
 
-    Player findPlayerOnTeam(String playerName) {
+    // EFFECTS: returns the player based on the inputted playerName. If the player is NOT on the fantasy team, returns
+    //          null.
+    public Player findPlayerOnTeam(String playerName) {
         for (Player player : playersOnTeam) {
             if (Objects.equals(player.getName(), playerName)) {
                 return player;
@@ -36,14 +45,17 @@ public class FantasyNbaTeam {
         return null;
     }
 
+    // EFFECTS: returns fantasy team name
     public String getFantasyTeamName() {
         return fantasyTeam;
     }
 
+    // EFFECTS: returns the number of players on the fantasy team.
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
+    // EFFECTS: returns the names of the players on the fantasy team
     public List<String> getPlayersOnTeam() {
         List<String> playersOnFTeam = new ArrayList<>();
         for (Player playa: playersOnTeam) {
@@ -52,6 +64,9 @@ public class FantasyNbaTeam {
         return playersOnFTeam;
     }
 
+    // REQUIRES: name has to have a string-length > 0
+    // MODIFIES: this
+    // EFFECTS: sets the fantasy team name to name.
     public void setFantasyTeamName(String name) {
         this.fantasyTeam = name;
     }

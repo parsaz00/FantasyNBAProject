@@ -29,10 +29,9 @@ allow users to improve their NBA fantasy experience.
 
 
 ## User Stories
-* As a user, I want to be able to create a new fantasy team and add NBA players to it 
+* As a user, I want to be able to create a new fantasy team and add multiple NBA players to it. 
 * As a user, I want to be able to add statistics for a player on a fantasy team.  
-* As a user, I want to be able to select a fantasy team and view a list of players on the team. 
-* As a user, I want to be able to add a fantasy team to a fantasy league.  
+* As a user, I want to be able to select a fantasy team and view a list of players on the team.
 * As a user, I want to be able to create a player with a name, jersey number, and NBA team. 
 
   

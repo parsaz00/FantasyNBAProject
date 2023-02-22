@@ -24,51 +24,76 @@ public class Player {
         assists = 0;
     }
 
+    // EFFECTS: returns the player's name
     public String getName() {
         return name;
     }
 
+    // REQUIRES: name length is > 0;
+    // MODIFIES: this
+    // EFFECTS: sets the player's name to "name"
     public void setName(String name) {
         this.name = name;
     }
 
+    // EFFECTS: returns the player's jersey number
     public int getJerseyNumber() {
         return jerseyNumber;
     }
 
+    // REQUIRES: number >= 0;
+    // MODIFIES: this
+    // EFFECTS: sets the player's jersey number to "number"
     public void setJerseyNumber(int number) {
         this.jerseyNumber = number;
     }
 
+    // EFFECTS: returns the player's NBA team
     public String getTeam() {
         return nbaTeam;
     }
 
+    // REQUIRES: teamName to be a current NBA team
+    // MODIFIES: this
+    // EFFECTS: sets the player's NBA team to "teamName"
     public void setTeamName(String teamName) {
         this.nbaTeam = teamName;
     }
 
 
+    // EFFECTS: returns the player's points
     public int getPoints() {
         return points;
     }
 
+    // EFFECTS: returns the player's rebounds
     public int getRebounds() {
         return rebounds;
     }
 
+    // EFFECTS: returns the player's assists
     public int getAssists() {
         return assists;
     }
 
+    // REQUIRES: p >= 0
+    // MODIFIES: this
+    // EFFECTS: updates the player's points to be equal to p
     public void addPoints(int p) {
         points += p;
     }
+
+    // REQUIRES: r >= 0
+    // MODIFIES: this
+    // EFFECTS: updates the player's rebounds to be equal to r
 
     public void addRebounds(int r) {
         rebounds += r;
     }
 
+    // REQUIRES: a >= 0
+    // MODIFIES: this
+    // EFFECTS: updates the player's assists to be equal to a
     public void addAssists(int a) {
         assists += a;
     }
