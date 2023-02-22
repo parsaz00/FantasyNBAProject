@@ -72,12 +72,12 @@ public class FantasyApp {
     private void displayMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\tcp -> create player");
-        System.out.println("\tct -> new team");
+        System.out.println("\tct -> create team");
         System.out.println("\tapt -> add a player to a fantasy team");
         System.out.println("Functions below only work if players have already been added to your fantasy team");
         System.out.println("\tas -> add statistics for player on your fantasy team");
         System.out.println("\tvp -> view players on fantasy team");
-        System.out.println("\tvps -> view player stats");
+        System.out.println("\tvps -> view a player's stats");
         System.out.println("\tq -> quit");
     }
 
@@ -90,7 +90,7 @@ public class FantasyApp {
         System.out.println("Enter a player name");
         String pname = sc1.nextLine();
         pl.setName(pname);
-        System.out.println("Enter player jersey number");
+        System.out.println("Enter player's jersey number");
         int pnum = sc2.nextInt();
         pl.setJerseyNumber(pnum);
         System.out.println("Enter player's NBA team name");
@@ -117,7 +117,7 @@ public class FantasyApp {
     // EFFECTS: creates a player and adds it to the fantasy team.
     private void addPlayerToTeam() {
         team.addPlayerToFantasyTeam(createNewPlayer());
-        System.out.println("Would you like to add another player");
+        System.out.println("Would you like to add another player?");
         Scanner sc3 = new Scanner(System.in);
         String answer1 = sc3.nextLine();
         if ((Objects.equals(answer1, "yes"))) {
@@ -161,7 +161,7 @@ public class FantasyApp {
         // REQUIRES: playerName must be a player already added to the team.
         // EFFECTS: returns inputted players stats: points, rebounds, and assists
     private void viewStatistics() {
-        System.out.println("Enter players name");
+        System.out.println("Enter player's name");
         Scanner sc = new Scanner(System.in);
         String playerName = sc.nextLine();
         Player statsPlayer = team.findPlayerOnTeam(playerName);
