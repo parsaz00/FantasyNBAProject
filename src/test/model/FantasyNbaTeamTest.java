@@ -40,6 +40,7 @@ public class FantasyNbaTeamTest {
             fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2);
         }
         assertFalse(fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2));
+        assertEquals(12, fantasyNbaTeam1.getNumberOfPlayers());
 
     }
     @Test

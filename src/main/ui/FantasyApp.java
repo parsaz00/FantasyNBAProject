@@ -19,6 +19,8 @@ public class FantasyApp {
     //MODIFIES: this
     //EFFECTS: processes user input
 
+    //SOURCE: TellerApp
+
     private void runFantasyApp() {
         boolean keepGoing = true;
         String command = null;
@@ -42,6 +44,8 @@ public class FantasyApp {
     //MODIFIES: this
     //EFFECTS: processes user command
 
+    //SOURCE: TellerApp(edited)
+
     private void processCommand(String command) {
         if (command.equals("cp")) {
             createNewPlayer();
@@ -62,6 +66,8 @@ public class FantasyApp {
 
     // MODIFIES: this
     // EFFECTS: initializes fantasy NBA team
+
+    //SOURCE: TellerApp(edited)
     private void initialize() {
         team = new FantasyNbaTeam("");
         input = new Scanner(System.in);
@@ -69,6 +75,8 @@ public class FantasyApp {
     }
 
     // EFFECTS: displays menu of user input options
+
+    //SOURCE: TellerApp(edited)
     private void displayMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\tcp -> create player");
@@ -103,7 +111,7 @@ public class FantasyApp {
 
 
     // MODIFIES: this
-    // EFFECTS: creates a new fantasy nba team, and sets the team name to name user inputs
+    // EFFECTS: creates a new fantasy nba team, and sets the team name to user inputted name.
     private void createNewFantasyTeam() {
         team = new FantasyNbaTeam("");
         Scanner sc = new Scanner(System.in);

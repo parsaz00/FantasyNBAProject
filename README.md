@@ -33,5 +33,6 @@ allow users to improve their NBA fantasy experience.
 * As a user, I want to be able to add statistics for a player on a fantasy team.  
 * As a user, I want to be able to select a fantasy team and view a list of players on the team.
 * As a user, I want to be able to create a player with a name, jersey number, and NBA team. 
+* As a user, I want to be able to look at the statistics for a player on my Fantasy Team. 
 
   
