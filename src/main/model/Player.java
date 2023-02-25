@@ -11,9 +11,9 @@ public class Player {
     private int assists;
 
     /*
-     * REQUIRES: playerName and teamName has non-zero length, jerseyNum >= 0, teamName is a current NBA team
+     * REQUIRES: playerName and teamName have non-zero length, jerseyNum >= 0, teamName is a current NBA team
      * EFFECTS: player name is set to playerName; jerseyNum is a positive integer assigned to a player; the NBA
-     *          team the player belongs to is set to nbaTeam
+     *          team the player belongs to is set to nbaTeam, and points, rebounds, and assits are set to 0.
      */
     public Player(String playerName, int jerseyNum, String teamName) {
         name = playerName;
@@ -78,14 +78,14 @@ public class Player {
 
     // REQUIRES: p >= 0
     // MODIFIES: this
-    // EFFECTS: updates the player's points to be equal to p
+    // EFFECTS: adds p to the player's current points
     public void addPoints(int p) {
         points += p;
     }
 
     // REQUIRES: r >= 0
     // MODIFIES: this
-    // EFFECTS: updates the player's rebounds to be equal to r
+    // EFFECTS: adds r to player's current rebounds
 
     public void addRebounds(int r) {
         rebounds += r;
@@ -93,7 +93,7 @@ public class Player {
 
     // REQUIRES: a >= 0
     // MODIFIES: this
-    // EFFECTS: updates the player's assists to be equal to a
+    // EFFECTS: adds a to player's current assists
     public void addAssists(int a) {
         assists += a;
     }

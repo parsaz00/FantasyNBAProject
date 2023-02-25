@@ -18,9 +18,7 @@ public class FantasyApp {
 
     //MODIFIES: this
     //EFFECTS: processes user input
-
     //SOURCE: TellerApp
-
     private void runFantasyApp() {
         boolean keepGoing = true;
         String command = null;
@@ -43,9 +41,7 @@ public class FantasyApp {
 
     //MODIFIES: this
     //EFFECTS: processes user command
-
     //SOURCE: TellerApp(edited)
-
     private void processCommand(String command) {
         if (command.equals("cp")) {
             createNewPlayer();
@@ -66,7 +62,6 @@ public class FantasyApp {
 
     // MODIFIES: this
     // EFFECTS: initializes fantasy NBA team
-
     //SOURCE: TellerApp(edited)
     private void initialize() {
         team = new FantasyNbaTeam("");
@@ -75,7 +70,6 @@ public class FantasyApp {
     }
 
     // EFFECTS: displays menu of user input options
-
     //SOURCE: TellerApp(edited)
     private void displayMenu() {
         System.out.println("\nSelect from:");
@@ -131,7 +125,7 @@ public class FantasyApp {
         if ((Objects.equals(answer1, "yes"))) {
             addPlayerToTeam();
         } else {
-            System.out.println();
+            System.out.println("Ok, we won't add another player");
             System.out.println(team.getPlayersOnTeam());
         }
     }
@@ -141,6 +135,8 @@ public class FantasyApp {
         System.out.println(team.getPlayersOnTeam());
     }
 
+    // REQUIRES: player that statistics want to be added for must already be on the fantasy team
+    // MODIFIES: this
     // EFFECTS: finds player on fantasy team based on user input, then adds points, rebounds, and assists for that
     //          player, again based on user input.
     private void addStatistics() {
@@ -166,7 +162,7 @@ public class FantasyApp {
 
     }
 
-        // REQUIRES: playerName must be a player already added to the team.
+        // REQUIRES: playerName must be of a player already added to the team.
         // EFFECTS: returns inputted players stats: points, rebounds, and assists
     private void viewStatistics() {
         System.out.println("Enter player's name");

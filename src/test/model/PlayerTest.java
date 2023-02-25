@@ -51,6 +51,8 @@ class PlayerTest {
         assertEquals(1, testPlayer1.getPoints());
         testPlayer2.addPoints(100);
         assertEquals(100, testPlayer2.getPoints());
+        testPlayer1.addPoints(2);
+        assertEquals(3, testPlayer1.getPoints());
     }
     @Test
     void addAssistsTest() {
@@ -58,6 +60,8 @@ class PlayerTest {
         assertEquals(10, testPlayer1.getAssists());
         testPlayer2.addAssists(6);
         assertEquals(6, testPlayer2.getAssists());
+        testPlayer2.addAssists(3);
+        assertEquals(9, testPlayer2.getAssists());
     }
     @Test
     void addReboundsTest() {
@@ -65,5 +69,7 @@ class PlayerTest {
         assertEquals(53, testPlayer1.getRebounds());
         testPlayer2.addRebounds(13);
         assertEquals(13, testPlayer2.getRebounds());
+        testPlayer1.addRebounds(10);
+        assertEquals(63, testPlayer1.getRebounds());
     }
 }

@@ -13,7 +13,7 @@ public class FantasyNbaTeam {
 
     // REQUIRES: fantasyTeamName has non-zero length
     // EFFECTS: creates a new fantasy team, with fantasy team name set to fantasyTeamName and
-    //          an empty roster (i.e., no players on the team)
+    //          an empty roster (i.e., no players on the team), and numberOfPlayers set to zero.
     public FantasyNbaTeam(String fantasyTeamName) {
         fantasyTeam = fantasyTeamName;
         numberOfPlayers = 0;

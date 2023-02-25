@@ -3,25 +3,25 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-
-import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FantasyNbaTeamTest {
     private FantasyNbaTeam fantasyNbaTeam1;
     private FantasyNbaTeam fantasyNbaTeam2;
+    private FantasyNbaTeam fantasyNbaTeam3;
     private Player testPlayer1;
     private Player testPlayer2;
+    private Player testPlayer3;
 
     @BeforeEach
     void setUp() {
         fantasyNbaTeam1 = new FantasyNbaTeam("The Rollers");
         fantasyNbaTeam2 = new FantasyNbaTeam("The Bucket Getters");
+        fantasyNbaTeam3 = new FantasyNbaTeam("The High tops");
         testPlayer1 = new Player("Lebron James", 6, "Lakers");
         testPlayer2 = new Player("Luka Doncic", 77, "Mavericks");
+        testPlayer3 = new Player("Kevin Durant", 7, "Suns");
     }
     @Test
     void constructorTest() {
@@ -41,6 +41,12 @@ public class FantasyNbaTeamTest {
         }
         assertFalse(fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2));
         assertEquals(12, fantasyNbaTeam1.getNumberOfPlayers());
+        assertEquals(0, fantasyNbaTeam3.getNumberOfPlayers());
+        for (int i = 0; i < 11; i++) {
+            fantasyNbaTeam3.addPlayerToFantasyTeam(testPlayer2);
+        }
+        assertTrue(fantasyNbaTeam3.addPlayerToFantasyTeam(testPlayer1));
+        assertFalse(fantasyNbaTeam3.addPlayerToFantasyTeam(testPlayer2));
 
     }
     @Test
@@ -57,7 +63,6 @@ public class FantasyNbaTeamTest {
     void getPlayersOnTeamTest() {
         fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer1);
         fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2);
-        Player testPlayer3 = new Player("Kevin Durant", 7, "Suns");
         fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer3);
         List<String> testList = fantasyNbaTeam1.getPlayersOnTeam();
         assertEquals(3, testList.size());
@@ -65,6 +70,9 @@ public class FantasyNbaTeamTest {
         assertTrue(testList.contains("Lebron James"));
         assertTrue(testList.contains("Luka Doncic"));
         assertFalse(testList.contains("Michael Jordan"));
+        assertEquals("Lebron James", testList.get(0));
+        assertEquals("Luka Doncic", testList.get(1));
+        assertEquals("Kevin Durant", testList.get(2));
     }
 
     @Test
@@ -73,6 +81,8 @@ public class FantasyNbaTeamTest {
         assertEquals("Lakers", fantasyNbaTeam1.getFantasyTeamName());
         fantasyNbaTeam2.setFantasyTeamName("Test");
         assertEquals("Test", fantasyNbaTeam2.getFantasyTeamName());
+        fantasyNbaTeam2.setFantasyTeamName("Test2");
+        assertEquals("Test2", fantasyNbaTeam2.getFantasyTeamName());
     }
 
 }
