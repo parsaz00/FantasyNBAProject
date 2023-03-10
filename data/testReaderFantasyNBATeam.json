@@ -1,0 +1,37 @@
+{"players on team": [
+  {
+    "rebounds": 10,
+    "jersey number": 6,
+    "assists": 16,
+    "name": "Lebron James",
+    "NBA team": "Lakers",
+    "points": 5
+  },
+  {
+    "rebounds": 20,
+    "jersey number": 3,
+    "assists": 5,
+    "name": "Anthony Davis",
+    "NBA team": "Lakers",
+    "points": 40
+  },
+  {
+    "rebounds": 0,
+    "jersey number": 13,
+    "assists": 0,
+    "name": "D'Angelo Russel",
+    "NBA team": "Lakers",
+    "points": 0
+  },
+  {
+    "rebounds": 2,
+    "jersey number": 5,
+    "assists": 2,
+    "name": "Malik Beasely ",
+    "NBA team": "Lakers",
+    "points": 15
+  }
+],
+  "team name": "Test Team 2",
+  "number of players": 4
+}

@@ -194,7 +194,7 @@ public class FantasyApp {
             jsonWriter.open();
             jsonWriter.write(team);
             jsonWriter.close();
-            System.out.println("Successfully save " + team.getFantasyTeamName() + " to " + JSON_STORE);
+            System.out.println("Successfully saved " + team.getFantasyTeamName() + " to " + JSON_STORE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to save to file to: " + JSON_STORE);
         }
@@ -206,6 +206,7 @@ public class FantasyApp {
         try {
             team = jsonReader.read();
             System.out.println("Loaded " + team.getFantasyTeamName() + " from " + JSON_STORE);
+            System.out.println("These are the players currently on the team: " + team.getPlayersOnTeam());
         } catch (IOException e) {
             System.out.println("Failed to read from file: " + JSON_STORE);
         }
