@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writeable;
+
 // Class representing a Fantasy NBA team
-public class FantasyNbaTeam {
+public class FantasyNbaTeam implements Writeable {
     public static final int MAX_NUM_PLAYERS = 12;
     private String fantasyTeam;
     private int numberOfPlayers;
@@ -58,7 +62,7 @@ public class FantasyNbaTeam {
     // EFFECTS: returns the names of the players on the fantasy team
     public List<String> getPlayersOnTeam() {
         List<String> playersOnFTeam = new ArrayList<>();
-        for (Player playa: playersOnTeam) {
+        for (Player playa : playersOnTeam) {
             playersOnFTeam.add(playa.getName());
         }
         return playersOnFTeam;
@@ -70,4 +74,23 @@ public class FantasyNbaTeam {
     public void setFantasyTeamName(String name) {
         this.fantasyTeam = name;
     }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("team name", fantasyTeam);
+        json.put("number of players", numberOfPlayers);
+        json.put("players on team", playerOnTeamToJson());
+        return json;
+    }
+
+    // EFFECTS: returns players on this Fantasy NBA team as a JSON array
+    private JSONArray playerOnTeamToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Player p : playersOnTeam) {
+            jsonArray.put(p.toJson());
+        }
+        return jsonArray;
+    }
+
 }

@@ -2,17 +2,24 @@ package ui;
 
 import model.FantasyNbaTeam;
 import model.Player;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
 // Fantasy NBA application
 public class FantasyApp {
+    private static final String JSON_STORE = "./data/fantasyNbaTeam.json";
     private FantasyNbaTeam team;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     //EFFECTS: runs the NBA fantasy application
-    public FantasyApp() {
+    public FantasyApp() throws FileNotFoundException {
         runFantasyApp();
     }
 
@@ -55,6 +62,10 @@ public class FantasyApp {
             addStatistics();
         } else if (command.equals("vps")) {
             viewStatistics();
+        } else if (command.equals("s")) {
+            saveFantasyNbaTeam();
+        } else if (command.equals("l")) {
+            loadFantasyNbaTeam();
         } else {
             System.out.println("Selection not valid");
         }
@@ -66,6 +77,8 @@ public class FantasyApp {
     private void initialize() {
         team = new FantasyNbaTeam("");
         input = new Scanner(System.in);
+        jsonReader = new JsonReader(JSON_STORE);
+        jsonWriter = new JsonWriter(JSON_STORE);
         input.useDelimiter("\n");
     }
 
@@ -80,6 +93,8 @@ public class FantasyApp {
         System.out.println("\tas -> add statistics for player on your fantasy team");
         System.out.println("\tvp -> view players on fantasy team");
         System.out.println("\tvps -> view a player's stats");
+        System.out.println("\ts -> save fantasy NBA team to file");
+        System.out.println("\tl -> load fantasy NBA team from file");
         System.out.println("\tq -> quit");
     }
 
@@ -162,14 +177,37 @@ public class FantasyApp {
 
     }
 
-        // REQUIRES: playerName must be of a player already added to the team.
-        // EFFECTS: returns inputted players stats: points, rebounds, and assists
+    // REQUIRES: playerName must be of a player already added to the team.
+    // EFFECTS: returns inputted players stats: points, rebounds, and assists
     private void viewStatistics() {
         System.out.println("Enter player's name");
         Scanner sc = new Scanner(System.in);
         String playerName = sc.nextLine();
         Player statsPlayer = team.findPlayerOnTeam(playerName);
         System.out.println("Points: " + statsPlayer.getPoints() + " Rebounds: " + statsPlayer.getRebounds()
-                + " Assists: "  + statsPlayer.getAssists());
+                + " Assists: " + statsPlayer.getAssists());
+    }
+
+    // EFFECTS: saves the fantasy NBA team to file
+    private void saveFantasyNbaTeam() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(team);
+            jsonWriter.close();
+            System.out.println("Successfully save " + team.getFantasyTeamName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to save to file to: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads fantasy NBA team from file
+    private void loadFantasyNbaTeam() {
+        try {
+            team = jsonReader.read();
+            System.out.println("Loaded " + team.getFantasyTeamName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Failed to read from file: " + JSON_STORE);
+        }
     }
 }

@@ -1,8 +1,11 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writeable;
+
 // Represents an NBA player, having a name (first and last), a jersey number, NBA team
 //  and statistics: Points, Rebounds and Assists.
-public class Player {
+public class Player implements Writeable {
     private String name;
     private int jerseyNumber;
     private String nbaTeam;
@@ -96,6 +99,18 @@ public class Player {
     // EFFECTS: adds a to player's current assists
     public void addAssists(int a) {
         assists += a;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("jersey number", jerseyNumber);
+        json.put("NBA team", nbaTeam);
+        json.put("points", points);
+        json.put("rebounds", rebounds);
+        json.put("assists", assists);
+        return json;
     }
 
 

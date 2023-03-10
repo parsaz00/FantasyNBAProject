@@ -1,0 +1,22 @@
+{
+    "players on team": [
+        {
+            "rebounds": 4,
+            "jersey number": 6,
+            "assists": 12,
+            "name": "Lebron James",
+            "NBA team": "Lakers",
+            "points": 14
+        },
+        {
+            "rebounds": 0,
+            "jersey number": 3,
+            "assists": 0,
+            "name": "Anthony Davis",
+            "NBA team": "Lakers",
+            "points": 0
+        }
+    ],
+    "team name": "The Armon Killers",
+    "number of players": 2
+}
