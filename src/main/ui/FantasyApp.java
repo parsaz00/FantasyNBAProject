@@ -188,6 +188,7 @@ public class FantasyApp {
                 + " Assists: " + statsPlayer.getAssists());
     }
 
+    //SOURCE: JsonSerializationDemo CPSC 210
     // EFFECTS: saves the fantasy NBA team to file
     private void saveFantasyNbaTeam() {
         try {
@@ -200,6 +201,7 @@ public class FantasyApp {
         }
     }
 
+    // SOURCE: JsonSerializationDemo CPSC 210
     // MODIFIES: this
     // EFFECTS: loads fantasy NBA team from file
     private void loadFantasyNbaTeam() {

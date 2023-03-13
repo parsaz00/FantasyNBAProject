@@ -1,22 +1,12 @@
 {
-    "players on team": [
-        {
-            "rebounds": 6,
-            "jersey number": 6,
-            "assists": 8,
-            "name": "Lebron James",
-            "NBA team": "Lakers",
-            "points": 32
-        },
-        {
-            "rebounds": 0,
-            "jersey number": 3,
-            "assists": 0,
-            "name": "Anthony Davis",
-            "NBA team": "Lakers",
-            "points": 0
-        }
-    ],
-    "team name": "Lakers are Goated",
-    "number of players": 2
+    "players on team": [{
+        "rebounds": 0,
+        "jersey number": 6,
+        "assists": 0,
+        "name": "Lebron James",
+        "NBA team": "Lakers",
+        "points": 0
+    }],
+    "team name": "New Parsa's Team",
+    "number of players": 1
 }

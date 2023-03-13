@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+// SOURCE: JsonSerializationDemo CPSC 210
 // Represents a writer that writes JSON representation of Fantasy NBA team to file
 public class JsonWriter {
     private static final int TAB = 4;

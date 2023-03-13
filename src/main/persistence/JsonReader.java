@@ -59,7 +59,8 @@ public class JsonReader {
     }
 
     // MODIFIES: fantasyNbaTeam
-    // EFFECTS: parses player from JSON object and adds it to the Fantasy NBA team
+    // EFFECTS: parses player from JSON object , adds player's point, rebounds, and assits, and
+    //          then and adds it to the Fantasy NBA team
     private void addPlayer(FantasyNbaTeam fnt, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         int jerseyNumber = jsonObject.getInt("jersey number");
