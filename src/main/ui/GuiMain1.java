@@ -2,12 +2,19 @@ package ui;
 
 import model.FantasyNbaTeam;
 import model.Player;
+import persistence.JsonReader;
+import persistence.JsonWriter;
+import persistence.Writeable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+
 
 public class GuiMain1 extends JFrame {
     private static final int WIDTH = 500;
@@ -15,10 +22,13 @@ public class GuiMain1 extends JFrame {
     private FantasyNbaTeam fantasyNbaTeam;
     private JPanel homePanel;
     private JPanel fantasyTeamPanel;
+    private static final String JSON_STORE = "./data/fantasyNbaTeam.json";
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: constructs GUI pane
 
-    public GuiMain1() {
+    public GuiMain1() throws FileNotFoundException {
         setUp();
     }
 
@@ -30,6 +40,9 @@ public class GuiMain1 extends JFrame {
         homePanel = new JPanel();
         homeFrame.add(homePanel);
         homePanelButtonSetup();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+
 
     }
 
@@ -70,6 +83,7 @@ public class GuiMain1 extends JFrame {
         viewPlayerStats();
         saveOption();
         loadOption();
+        returnHome();
     }
 
     public void addPlayerToTeam() {
@@ -159,7 +173,15 @@ public class GuiMain1 extends JFrame {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    jsonWriter.open();
+                    jsonWriter.write(fantasyNbaTeam);
+                    jsonWriter.close();
+                    System.out.println("Successfully saved " + fantasyNbaTeam.getFantasyTeamName()
+                            + " to " + JSON_STORE);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    System.out.println("Unable to save to file to: " + JSON_STORE);
+                }
             }
         });
     }
@@ -170,13 +192,35 @@ public class GuiMain1 extends JFrame {
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
+                    fantasyNbaTeam = jsonReader.read();
+                    System.out.println("Loaded " + fantasyNbaTeam.getFantasyTeamName() + " from " + JSON_STORE);
+                    System.out.println("These are the players currently on the team: "
+                            + fantasyNbaTeam.getPlayersOnTeam());
+                } catch (IOException ioException) {
+                    System.out.println("Failed to read from file: " + JSON_STORE);
+                }
+            }
+        });
+    }
 
+    public void returnHome() {
+        JButton goHome = new JButton("Return to home screen");
+        fantasyTeamPanel.add(goHome);
+        goHome.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setUp();
             }
         });
     }
 
     public static void main(String[] args) {
-        new GuiMain1();
+        try {
+            new GuiMain1();
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to run application: file not found");
+        }
     }
 
 }

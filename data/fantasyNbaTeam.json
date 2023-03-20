@@ -1,22 +1,30 @@
 {
     "players on team": [
         {
-            "rebounds": 2,
-            "jersey number": 3,
-            "assists": 3,
-            "name": "TestPlayer3",
-            "NBA team": "TestNBA3",
+            "rebounds": 1,
+            "jersey number": 1,
+            "assists": 1,
+            "name": "Parsa1",
+            "NBA team": "1",
             "points": 1
         },
         {
-            "rebounds": 3,
-            "jersey number": 4,
+            "rebounds": 2,
+            "jersey number": 2,
             "assists": 2,
-            "name": "TestPlayer4",
-            "NBA team": "TestNBA4",
-            "points": 4
+            "name": "Parsa2",
+            "NBA team": "2",
+            "points": 2
+        },
+        {
+            "rebounds": 0,
+            "jersey number": 1,
+            "assists": 0,
+            "name": "Parsa3",
+            "NBA team": "1",
+            "points": 0
         }
     ],
-    "team name": "TestTeam2",
-    "number of players": 2
+    "team name": "Lakers Will Rock the West",
+    "number of players": 3
 }
