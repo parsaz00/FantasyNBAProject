@@ -1,0 +1,31 @@
+ class Action implements ActionListener {
+
+        }
+
+        JFrame frame = new JFrame();
+        JPanel panel = new JPanel();
+        JTextField fantastyNameInput = new JFormattedTextField("");
+        JButton createTeam = new JButton("Create Fantasy Team");
+        createTeam.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String input = fantastyNameInput.getText();
+                FantasyNbaTeam fantasyNbaTeam = new FantasyNbaTeam(input);
+            }
+        });
+
+        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        panel.setLayout(new GridLayout(0, 1));
+
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Fantasy NBA App");
+        frame.pack();
+        frame.setVisible(true);
+        frame.add(createTeam);
+
+
+
+
+
+ asd
