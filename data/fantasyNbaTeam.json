@@ -1,30 +1,38 @@
 {
     "players on team": [
         {
-            "rebounds": 1,
-            "jersey number": 1,
-            "assists": 1,
-            "name": "Parsa1",
-            "NBA team": "1",
-            "points": 1
-        },
-        {
-            "rebounds": 2,
-            "jersey number": 2,
-            "assists": 2,
-            "name": "Parsa2",
-            "NBA team": "2",
-            "points": 2
+            "rebounds": 5,
+            "jersey number": 6,
+            "assists": 5,
+            "name": "Lebron James",
+            "NBA team": "Lakers",
+            "points": 5
         },
         {
             "rebounds": 0,
-            "jersey number": 1,
+            "jersey number": 3,
             "assists": 0,
-            "name": "Parsa3",
-            "NBA team": "1",
+            "name": "Anthony Davis",
+            "NBA team": "Lakers",
             "points": 0
+        },
+        {
+            "rebounds": 0,
+            "jersey number": 35,
+            "assists": 0,
+            "name": "Kevin Durant",
+            "NBA team": "Suns",
+            "points": 0
+        },
+        {
+            "rebounds": 15,
+            "jersey number": 0,
+            "assists": 15,
+            "name": "Kyrie Irving",
+            "NBA team": "Mavs",
+            "points": 15
         }
     ],
-    "team name": "Lakers Will Rock the West",
-    "number of players": 3
+    "team name": "T",
+    "number of players": 4
 }

@@ -14,7 +14,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class GuiMain extends JFrame {
@@ -26,6 +28,7 @@ public class GuiMain extends JFrame {
     private static final String JSON_STORE = "./data/fantasyNbaTeam.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+    private Map<String, String> playerStats = new HashMap<>();
 
     // EFFECTS: constructs GUI pane
 
@@ -54,7 +57,6 @@ public class GuiMain extends JFrame {
     }
 
     public JLabel homePicture() throws IOException {
-
         BufferedImage bufferedImage = ImageIO.read(new File("./data/images/fantasyBaskeball.png"));
         Image image = bufferedImage.getScaledInstance(80, 80, Image.SCALE_DEFAULT);
         ImageIcon imageIcon = new ImageIcon(image);
@@ -156,9 +158,13 @@ public class GuiMain extends JFrame {
         fantasyNbaTeam.addPlayerToFantasyTeam(player);
     }
 
-    public void addPlayerStats() {
+    public void addPlayerStats() throws IOException {
         JButton addStats = new JButton("Add Statistics for your Player");
         fantasyTeamPanel.add(addStats);
+        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/statisticsIcon.png"));
+        Image image = bufferedImage.getScaledInstance(35, 35, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        addStats.setIcon(imageIcon);
         addStats.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -170,6 +176,8 @@ public class GuiMain extends JFrame {
 
     public void addPlayerStatsButtonMethod() {
         String playerNameInput = JOptionPane.showInputDialog("Enter Player Name You Want to Add Stats For");
+        String dateOfStatInput = JOptionPane.showInputDialog("Enter The Date for This Stat Line in the format"
+                + "of MM/DD/YYYY (ex. 12/01/2023");
         Player playa = fantasyNbaTeam.findPlayerOnTeam(playerNameInput);
         int playerPoints = Integer.parseInt(JOptionPane.showInputDialog("Enter " + playerNameInput + "'s" + " points"));
         int playerRebounds = Integer.parseInt(JOptionPane.showInputDialog("Enter " + playerNameInput
@@ -179,6 +187,11 @@ public class GuiMain extends JFrame {
         playa.addPoints(playerPoints);
         playa.addRebounds(playerRebounds);
         playa.addAssists(playerAssists);
+        String keyForStat = playerNameInput + " " + dateOfStatInput;
+        String statsString = (playa.getName() + " Points: " + playa.getPoints() + " Rebounds: "
+                + playa.getRebounds() + " Assists: " + playa.getAssists());
+
+        playerStats.put(keyForStat, statsString);
         try {
             playerStatsAddedDisplay();
         } catch (IOException e) {
@@ -218,9 +231,10 @@ public class GuiMain extends JFrame {
     }
 
 
-    public void viewPlayersOnTeam() {
+    public void viewPlayersOnTeam() throws IOException {
         JButton viewPlayers = new JButton("View players on your team");
         fantasyTeamPanel.add(viewPlayers);
+        addIconForViewPlayer(viewPlayers);
         viewPlayers.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -240,6 +254,14 @@ public class GuiMain extends JFrame {
 
             }
         });
+    }
+
+    public JButton addIconForViewPlayer(JButton button) throws IOException {
+        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/viewPlayerOnTeamIcon.png"));
+        Image image = bufferedImage.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        button.setIcon(imageIcon);
+        return button;
     }
 
     public void viewPlayersDisplay() throws IOException {
@@ -279,25 +301,38 @@ public class GuiMain extends JFrame {
 
     }
 
-    public void viewPlayerStats() {
+    public void viewPlayerStats() throws IOException {
         JButton viewPlayerStats = new JButton("View a player's stats");
         fantasyTeamPanel.add(viewPlayerStats);
+        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/viewPlayerStatsIcon.png"));
+        Image image = bufferedImage.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        viewPlayerStats.setIcon(imageIcon);
         viewPlayerStats.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String playerNameInput = JOptionPane.showInputDialog("Whose statistics would you like to see?");
-                Player playa = fantasyNbaTeam.findPlayerOnTeam(playerNameInput);
-                String playerStats = (playa.getName() + " Points: " + playa.getPoints() + " Rebounds: "
-                        + playa.getRebounds() + " Assists: " + playa.getAssists());
-                JOptionPane.showMessageDialog(fantasyTeamPanel, playerStats, (playa.getName() + "'s Statistics"),
-                        JOptionPane.INFORMATION_MESSAGE);
+                String keyNameInput = JOptionPane.showInputDialog("Whose total statistics would you like to see?"
+                        + " Enter Player Name, a space, and then the date (MM/DD/YYYY) "
+                        + " for which you want to see the total stats"
+                        + " Example: Lebron James 12/23/2023");
+                JOptionPane.showMessageDialog(fantasyTeamPanel, playerStats.get(keyNameInput),
+                        "Player's statistics", JOptionPane.INFORMATION_MESSAGE);
+//                Player playa = fantasyNbaTeam.findPlayerOnTeam(playerNameInput);
+//                String playerStats = (playa.getName() + " Points: " + playa.getPoints() + " Rebounds: "
+//                        + playa.getRebounds() + " Assists: " + playa.getAssists());
+//                JOptionPane.showMessageDialog(fantasyTeamPanel, playerStats, (playa.getName() + "'s Statistics"),
+//                        JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }
 
-    public void saveOption() {
+    public void saveOption() throws IOException {
         JButton save = new JButton("Save your Fantasy Team");
         fantasyTeamPanel.add(save);
+        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/saveIcon.png"));
+        Image image = bufferedImage.getScaledInstance(35, 35, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        save.setIcon(imageIcon);
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -314,9 +349,13 @@ public class GuiMain extends JFrame {
         });
     }
 
-    public void loadOption() {
+    public void loadOption() throws IOException {
         JButton load = new JButton("Load your team");
         fantasyTeamPanel.add(load);
+        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/loadIcon.png"));
+        Image image = bufferedImage.getScaledInstance(35, 35, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        load.setIcon(imageIcon);
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
