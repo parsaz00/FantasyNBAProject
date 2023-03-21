@@ -4,19 +4,20 @@ import model.FantasyNbaTeam;
 import model.Player;
 import persistence.JsonReader;
 import persistence.JsonWriter;
-import persistence.Writeable;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
 
-public class GuiMain1 extends JFrame {
+public class GuiMain extends JFrame {
     private static final int WIDTH = 500;
     private static final int HEIGHT = 600;
     private FantasyNbaTeam fantasyNbaTeam;
@@ -28,24 +29,62 @@ public class GuiMain1 extends JFrame {
 
     // EFFECTS: constructs GUI pane
 
-    public GuiMain1() throws FileNotFoundException {
+    public GuiMain() throws IOException {
         setUp();
     }
 
-    public void setUp() {
+    public void setUp() throws IOException {
         JFrame homeFrame = new JFrame("Fantasy NBA Application");
         homeFrame.setVisible(true);
         homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         homeFrame.setSize(WIDTH, HEIGHT);
-        homePanel = new JPanel();
+        homePanel = new JPanel(new GridLayout(4, 1));
         homeFrame.add(homePanel);
         homePanelButtonSetup();
+        homePanel.add((homePicture()));
+        //homePanel.add(homePanelImageDisplay());
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
-
+        if (this.fantasyNbaTeam != null) {
+            JButton fantasyScreen = new JButton("Fantasy Team Screen ");
+            fantasyScreenButtonMethod(fantasyScreen);
+            homePanel.add(fantasyScreen);
+        }
 
     }
 
+    public JLabel homePicture() throws IOException {
+
+        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/fantasyBaskeball.png"));
+        Image image = bufferedImage.getScaledInstance(80, 80, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        JLabel homeLabel = new JLabel(imageIcon, SwingConstants.CENTER);
+        return homeLabel;
+    }
+
+    public void fantasyScreenButtonMethod(JButton button) {
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    fantasyTeamFrame();
+                } catch (IOException ex) {
+                    System.out.println("Failed to load fantasy team!");
+                }
+            }
+        });
+    }
+
+//    public JLabel homePanelImageDisplay() throws IOException {
+//        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/basketball.png"));
+//        Image image = bufferedImage.getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+//        ImageIcon imageIcon = new ImageIcon(image);
+//        JLabel basketballPic = new JLabel();
+//        basketballPic.setIcon(imageIcon);
+//        return basketballPic;
+//    }
+
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void homePanelButtonSetup() {
         JButton createFantasyTeam = new JButton("Create Fantasy Team");
         homePanel.add(createFantasyTeam);
@@ -56,7 +95,11 @@ public class GuiMain1 extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String input = JOptionPane.showInputDialog("Enter Fantasy Team Name");
                 fantasyNbaTeam = new FantasyNbaTeam(input);
-                fantasyTeamFrame();
+                try {
+                    fantasyTeamFrame();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         createPlayer.addActionListener(new ActionListener() {
@@ -70,12 +113,12 @@ public class GuiMain1 extends JFrame {
         });
     }
 
-    public void fantasyTeamFrame() {
+    public void fantasyTeamFrame() throws IOException {
         JFrame fantasyTeamCreationFrame = new JFrame("Fantasy Team");
         fantasyTeamCreationFrame.setVisible(true);
         fantasyTeamCreationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fantasyTeamCreationFrame.setSize(WIDTH, HEIGHT);
-        fantasyTeamPanel = new JPanel();
+        fantasyTeamPanel = new JPanel(new GridLayout(4, 2));
         fantasyTeamCreationFrame.add(fantasyTeamPanel);
         addPlayerToTeam();
         addPlayerStats();
@@ -86,13 +129,21 @@ public class GuiMain1 extends JFrame {
         returnHome();
     }
 
-    public void addPlayerToTeam() {
+    public void addPlayerToTeam() throws IOException {
         JButton addPlayer = new JButton("Add a player to your fantasy team");
+        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/plusSymbol.png"));
+        Image image = bufferedImage.getScaledInstance(35, 35, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        addPlayer.setIcon(imageIcon);
+        addPlayer.setPreferredSize(new Dimension(50, 50));
         fantasyTeamPanel.add(addPlayer);
         addPlayer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addPlayerToFantasyTeam();
+                JOptionPane.showMessageDialog(fantasyTeamPanel, "Player successfully added to "
+                                + fantasyNbaTeam.getFantasyTeamName(), "Message",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }
@@ -128,9 +179,44 @@ public class GuiMain1 extends JFrame {
         playa.addPoints(playerPoints);
         playa.addRebounds(playerRebounds);
         playa.addAssists(playerAssists);
-
+        try {
+            playerStatsAddedDisplay();
+        } catch (IOException e) {
+            System.out.println("Failed to load display");
+        }
 
     }
+
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    public void playerStatsAddedDisplay() throws IOException {
+        JFrame statsAddedFrame = new JFrame();
+        statsAddedFrame.setVisible(true);
+        statsAddedFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        statsAddedFrame.setSize(WIDTH, HEIGHT);
+        JPanel statsAddedPanel = new JPanel(new GridLayout(3, 1));
+        statsAddedFrame.add(statsAddedPanel);
+        BufferedImage bufferedImageImage = ImageIO.read(new File("./data/images/basketballPlayer.jpg"));
+        Image image = bufferedImageImage.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        JLabel basketballPlayer = new JLabel(imageIcon);
+        statsAddedPanel.add(basketballPlayer);
+        JLabel text = new JLabel("Player's stats have been successfully added", SwingConstants.CENTER);
+        statsAddedPanel.add(text);
+        JButton returnFantasyPage = new JButton("Return to Fantasy Team Screen");
+        statsAddedPanel.add(returnFantasyPage);
+        returnFantasyPage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    fantasyTeamFrame();
+                } catch (IOException ex) {
+                    System.out.println("Failed to load fantasy screen");
+                }
+            }
+        });
+
+    }
+
 
     public void viewPlayersOnTeam() {
         JButton viewPlayers = new JButton("View players on your team");
@@ -145,10 +231,52 @@ public class GuiMain1 extends JFrame {
                 }
                 JOptionPane.showMessageDialog(fantasyTeamPanel, playersOnTeamString, "Players on Your Team",
                         JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    viewPlayersDisplay();
+                } catch (IOException ex) {
+                    System.out.println("Failed to load display");
+                }
 
 
             }
         });
+    }
+
+    public void viewPlayersDisplay() throws IOException {
+        JFrame playersDisplay = new JFrame();
+        playersDisplay.setVisible(true);
+        playersDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        playersDisplay.setSize(WIDTH, HEIGHT);
+        JPanel playerDisplayPanel = new JPanel(new GridLayout(this.fantasyNbaTeam.getNumberOfPlayers() + 1, 1));
+        playersDisplay.add(playerDisplayPanel);
+        for (String player : this.fantasyNbaTeam.getPlayersOnTeam()) {
+            playerDisplayPanel.add(createPlayerLabel(player));
+        }
+        playerDisplayPanel.add(returnToFantasyScreen());
+    }
+
+    public JButton returnToFantasyScreen() {
+        JButton returnToFantasyScreenButton = new JButton("Return to Fantasy Screen");
+        returnToFantasyScreenButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    fantasyTeamFrame();
+                } catch (IOException ex) {
+                    System.out.println("Failed to return home");
+                }
+            }
+        });
+        return returnToFantasyScreenButton;
+    }
+
+    public JLabel createPlayerLabel(String name) throws IOException {
+        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/basketball.png"));
+        Image image = bufferedImage.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        JLabel label = new JLabel(name, imageIcon, JLabel.CENTER);
+        return label;
+
     }
 
     public void viewPlayerStats() {
@@ -204,22 +332,32 @@ public class GuiMain1 extends JFrame {
         });
     }
 
-    public void returnHome() {
+    public void returnHome() throws IOException {
         JButton goHome = new JButton("Return to home screen");
         fantasyTeamPanel.add(goHome);
+        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/homeScreen.png"));
+        Image image = bufferedImage.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        goHome.setIcon(imageIcon);
         goHome.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setUp();
+                try {
+                    setUp();
+                } catch (IOException ex) {
+                    System.out.println("Unable to load image");
+                }
             }
         });
     }
 
     public static void main(String[] args) {
         try {
-            new GuiMain1();
+            new GuiMain();
         } catch (FileNotFoundException e) {
             System.out.println("Unable to run application: file not found");
+        } catch (IOException e) {
+            System.out.println("Unable to load images");
         }
     }
 
