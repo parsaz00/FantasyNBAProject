@@ -59,6 +59,10 @@ public class FantasyNbaTeam implements Writeable {
         return numberOfPlayers;
     }
 
+    public List<Player> getPlayers() {
+        return this.playersOnTeam;
+    }
+
     // EFFECTS: returns the names of the players on the fantasy team
     public List<String> getPlayersOnTeam() {
         List<String> playersOnFTeam = new ArrayList<>();

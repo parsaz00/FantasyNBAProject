@@ -11,17 +11,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 public class GuiMain extends JFrame {
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 700;
+    private static final int HEIGHT = 800;
     private FantasyNbaTeam fantasyNbaTeam;
     private JPanel homePanel;
     private JPanel fantasyTeamPanel;
@@ -42,6 +45,7 @@ public class GuiMain extends JFrame {
         homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         homeFrame.setSize(WIDTH, HEIGHT);
         homePanel = new JPanel(new GridLayout(4, 1));
+        homePanel.setBackground(Color.cyan);
         homeFrame.add(homePanel);
         homePanelButtonSetup();
         homePanel.add((homePicture()));
@@ -61,6 +65,7 @@ public class GuiMain extends JFrame {
         Image image = bufferedImage.getScaledInstance(80, 80, Image.SCALE_DEFAULT);
         ImageIcon imageIcon = new ImageIcon(image);
         JLabel homeLabel = new JLabel(imageIcon, SwingConstants.CENTER);
+
         return homeLabel;
     }
 
@@ -89,6 +94,7 @@ public class GuiMain extends JFrame {
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void homePanelButtonSetup() {
         JButton createFantasyTeam = new JButton("Create Fantasy Team");
+        createFantasyTeam.setBackground(Color.blue);
         homePanel.add(createFantasyTeam);
         JButton createPlayer = new JButton("Create a Fantasy Player");
         homePanel.add(createPlayer);
@@ -127,15 +133,18 @@ public class GuiMain extends JFrame {
         viewPlayersOnTeam();
         viewPlayerStats();
         saveOption();
-        loadOption();
+        try {
+            loadOption();
+        } catch (InterruptedException e) {
+            System.out.println("Load time error");
+        }
+        // viewStatisticalInformation();
         returnHome();
     }
 
     public void addPlayerToTeam() throws IOException {
         JButton addPlayer = new JButton("Add a player to your fantasy team");
-        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/plusSymbol.png"));
-        Image image = bufferedImage.getScaledInstance(35, 35, Image.SCALE_DEFAULT);
-        ImageIcon imageIcon = new ImageIcon(image);
+        ImageIcon imageIcon = getImageIcon("./data/images/plusSymbol.png");
         addPlayer.setIcon(imageIcon);
         addPlayer.setPreferredSize(new Dimension(50, 50));
         fantasyTeamPanel.add(addPlayer);
@@ -150,6 +159,15 @@ public class GuiMain extends JFrame {
         });
     }
 
+    private ImageIcon getImageIcon(String filepPath) throws IOException {
+        BufferedImage bufferedImage = ImageIO.read(new File(filepPath));
+        Image image = bufferedImage.getScaledInstance(35, 35, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        return imageIcon;
+    }
+    
+    
+
     public void addPlayerToFantasyTeam() {
         String playerName = JOptionPane.showInputDialog("Enter Player Name");
         String playerJerseyNumber = JOptionPane.showInputDialog("Enter Player's Jersey Number");
@@ -161,9 +179,7 @@ public class GuiMain extends JFrame {
     public void addPlayerStats() throws IOException {
         JButton addStats = new JButton("Add Statistics for your Player");
         fantasyTeamPanel.add(addStats);
-        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/statisticsIcon.png"));
-        Image image = bufferedImage.getScaledInstance(35, 35, Image.SCALE_DEFAULT);
-        ImageIcon imageIcon = new ImageIcon(image);
+        ImageIcon imageIcon = getImageIcon("./data/images/statisticsIcon.png");
         addStats.setIcon(imageIcon);
         addStats.addActionListener(new ActionListener() {
             @Override
@@ -176,8 +192,8 @@ public class GuiMain extends JFrame {
 
     public void addPlayerStatsButtonMethod() {
         String playerNameInput = JOptionPane.showInputDialog("Enter Player Name You Want to Add Stats For");
-        String dateOfStatInput = JOptionPane.showInputDialog("Enter The Date for This Stat Line in the format"
-                + "of MM/DD/YYYY (ex. 12/01/2023");
+        String dateOfStatInput = JOptionPane.showInputDialog("Enter Date:  "
+                + "MM/DD/YYYY (ex. 12/01/2023)");
         Player playa = fantasyNbaTeam.findPlayerOnTeam(playerNameInput);
         int playerPoints = Integer.parseInt(JOptionPane.showInputDialog("Enter " + playerNameInput + "'s" + " points"));
         int playerRebounds = Integer.parseInt(JOptionPane.showInputDialog("Enter " + playerNameInput
@@ -238,13 +254,13 @@ public class GuiMain extends JFrame {
         viewPlayers.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<String> playersOnTeam = fantasyNbaTeam.getPlayersOnTeam();
-                StringBuilder playersOnTeamString = new StringBuilder();
-                for (String player : playersOnTeam) {
-                    playersOnTeamString.append(player).append(". ");
-                }
-                JOptionPane.showMessageDialog(fantasyTeamPanel, playersOnTeamString, "Players on Your Team",
-                        JOptionPane.INFORMATION_MESSAGE);
+//                List<String> playersOnTeam = fantasyNbaTeam.getPlayersOnTeam();
+//                StringBuilder playersOnTeamString = new StringBuilder();
+//                for (String player : playersOnTeam) {
+//                    playersOnTeamString.append(player).append(". ");
+//                }
+//                JOptionPane.showMessageDialog(fantasyTeamPanel, playersOnTeamString, "Players on Your Team",
+//                        JOptionPane.INFORMATION_MESSAGE);
                 try {
                     viewPlayersDisplay();
                 } catch (IOException ex) {
@@ -349,11 +365,16 @@ public class GuiMain extends JFrame {
         });
     }
 
-    public void loadOption() throws IOException {
+    // SOURCE: https://stackoverflow.com/questions/26474909/gif-not-playing-in-jframe
+    public void loadOption() throws IOException, InterruptedException {
         JButton load = new JButton("Load your team");
         fantasyTeamPanel.add(load);
-        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/loadIcon.png"));
-        Image image = bufferedImage.getScaledInstance(35, 35, Image.SCALE_DEFAULT);
+        URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif");
+        Image image = Toolkit.getDefaultToolkit().createImage(url).getScaledInstance(35, 35,
+                Image.SCALE_DEFAULT);
+        MediaTracker mediaTracker = new MediaTracker(this);
+        mediaTracker.addImage(image, 0);
+        mediaTracker.waitForAll();
         ImageIcon imageIcon = new ImageIcon(image);
         load.setIcon(imageIcon);
         load.addActionListener(new ActionListener() {
@@ -370,6 +391,8 @@ public class GuiMain extends JFrame {
             }
         });
     }
+
+
 
     public void returnHome() throws IOException {
         JButton goHome = new JButton("Return to home screen");
