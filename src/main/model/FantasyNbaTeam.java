@@ -72,6 +72,16 @@ public class FantasyNbaTeam implements Writeable {
         return playersOnFTeam;
     }
 
+    // MODIFIES: this
+    // EFFECTS: removes player from team
+    public void removePlayer(Player player) {
+        for (Player player1: this.playersOnTeam) {
+            if (player1.getName().equals(player.getName())) {
+                this.playersOnTeam.remove(player);
+            }
+        }
+    }
+
     // REQUIRES: name has to have a string-length > 0
     // MODIFIES: this
     // EFFECTS: sets the fantasy team name to name.

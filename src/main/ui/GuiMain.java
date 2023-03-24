@@ -6,19 +6,17 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.imageio.ImageIO;
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -26,6 +24,9 @@ public class GuiMain extends JFrame {
     private static final int WIDTH = 700;
     private static final int HEIGHT = 800;
     private FantasyNbaTeam fantasyNbaTeam;
+    private JFrame fantasyTeamCreationFrame;
+    private JFrame homeFrame;
+    private JFrame playersDisplay;
     private JPanel homePanel;
     private JPanel fantasyTeamPanel;
     private static final String JSON_STORE = "./data/fantasyNbaTeam.json";
@@ -36,11 +37,15 @@ public class GuiMain extends JFrame {
     // EFFECTS: constructs GUI pane
 
     public GuiMain() throws IOException {
-        setUp();
+        try {
+            setUp();
+        } catch (InterruptedException e) {
+            System.out.println("Gif was interrupted");
+        }
     }
 
-    public void setUp() throws IOException {
-        JFrame homeFrame = new JFrame("Fantasy NBA Application");
+    public void setUp() throws IOException, InterruptedException {
+        homeFrame = new JFrame("Fantasy NBA Application");
         homeFrame.setVisible(true);
         homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         homeFrame.setSize(WIDTH, HEIGHT);
@@ -60,9 +65,13 @@ public class GuiMain extends JFrame {
 
     }
 
-    public JLabel homePicture() throws IOException {
-        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/fantasyBaskeball.png"));
-        Image image = bufferedImage.getScaledInstance(80, 80, Image.SCALE_DEFAULT);
+    public JLabel homePicture() throws IOException, InterruptedException {
+        URL url = new URL("https://media.tenor.com/nC2TXxXn1Y4AAAAi/spurs-bling.gif");
+        Image image = Toolkit.getDefaultToolkit().createImage(url).getScaledInstance(200, 200,
+                Image.SCALE_DEFAULT);
+        MediaTracker mediaTracker = new MediaTracker(this);
+        mediaTracker.addImage(image, 0);
+        mediaTracker.waitForAll();
         ImageIcon imageIcon = new ImageIcon(image);
         JLabel homeLabel = new JLabel(imageIcon, SwingConstants.CENTER);
 
@@ -122,7 +131,7 @@ public class GuiMain extends JFrame {
     }
 
     public void fantasyTeamFrame() throws IOException {
-        JFrame fantasyTeamCreationFrame = new JFrame("Fantasy Team");
+        fantasyTeamCreationFrame = new JFrame("Fantasy Team");
         fantasyTeamCreationFrame.setVisible(true);
         fantasyTeamCreationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fantasyTeamCreationFrame.setSize(WIDTH, HEIGHT);
@@ -132,6 +141,7 @@ public class GuiMain extends JFrame {
         addPlayerStats();
         viewPlayersOnTeam();
         viewPlayerStats();
+        removePlayerFromTeam();
         saveOption();
         try {
             loadOption();
@@ -165,8 +175,7 @@ public class GuiMain extends JFrame {
         ImageIcon imageIcon = new ImageIcon(image);
         return imageIcon;
     }
-    
-    
+
 
     public void addPlayerToFantasyTeam() {
         String playerName = JOptionPane.showInputDialog("Enter Player Name");
@@ -238,6 +247,7 @@ public class GuiMain extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     fantasyTeamFrame();
+                    statsAddedFrame.setVisible(false);
                 } catch (IOException ex) {
                     System.out.println("Failed to load fantasy screen");
                 }
@@ -281,7 +291,7 @@ public class GuiMain extends JFrame {
     }
 
     public void viewPlayersDisplay() throws IOException {
-        JFrame playersDisplay = new JFrame();
+        playersDisplay = new JFrame();
         playersDisplay.setVisible(true);
         playersDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         playersDisplay.setSize(WIDTH, HEIGHT);
@@ -300,6 +310,7 @@ public class GuiMain extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     fantasyTeamFrame();
+                    playersDisplay.setVisible(false);
                 } catch (IOException ex) {
                     System.out.println("Failed to return home");
                 }
@@ -342,6 +353,24 @@ public class GuiMain extends JFrame {
         });
     }
 
+    public void removePlayerFromTeam() {
+        JButton removePlayer = new JButton("Remove Player");
+        fantasyTeamPanel.add(removePlayer);
+        removePlayer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String removePlayerName = JOptionPane.showInputDialog("Which player would you "
+                        + "like to remove from your team?");
+                Player playerToRemove;
+                for (Player player: fantasyNbaTeam.getPlayers()) {
+                    if (player.getName().equals(removePlayerName)) {
+                        fantasyNbaTeam.removePlayer(player);
+                    }
+                }
+            }
+        });
+    }
+
     public void saveOption() throws IOException {
         JButton save = new JButton("Save your Fantasy Team");
         fantasyTeamPanel.add(save);
@@ -356,6 +385,8 @@ public class GuiMain extends JFrame {
                     jsonWriter.open();
                     jsonWriter.write(fantasyNbaTeam);
                     jsonWriter.close();
+                    JOptionPane.showMessageDialog(fantasyTeamPanel, "Team has been successfully saved!",
+                            "Save Message", JOptionPane.INFORMATION_MESSAGE);
                     System.out.println("Successfully saved " + fantasyNbaTeam.getFantasyTeamName()
                             + " to " + JSON_STORE);
                 } catch (FileNotFoundException fileNotFoundException) {
@@ -382,16 +413,14 @@ public class GuiMain extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     fantasyNbaTeam = jsonReader.read();
-                    System.out.println("Loaded " + fantasyNbaTeam.getFantasyTeamName() + " from " + JSON_STORE);
-                    System.out.println("These are the players currently on the team: "
-                            + fantasyNbaTeam.getPlayersOnTeam());
+                    JOptionPane.showMessageDialog(fantasyTeamPanel, "Team has been successfully loaded!",
+                            "Load Message", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IOException ioException) {
                     System.out.println("Failed to read from file: " + JSON_STORE);
                 }
             }
         });
     }
-
 
 
     public void returnHome() throws IOException {
@@ -406,8 +435,11 @@ public class GuiMain extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     setUp();
+                    fantasyTeamCreationFrame.setVisible(false);
                 } catch (IOException ex) {
                     System.out.println("Unable to load image");
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });

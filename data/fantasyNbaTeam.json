@@ -1,12 +1,12 @@
 {
     "players on team": [{
-        "rebounds": 74,
-        "jersey number": 1,
-        "assists": 425,
-        "name": "Yasmin1",
-        "NBA team": "T1",
-        "points": 6
+        "rebounds": 0,
+        "jersey number": 6,
+        "assists": 0,
+        "name": "Lebron James",
+        "NBA team": "Lakers",
+        "points": 0
     }],
-    "team name": "Yasmin's Team",
+    "team name": "Parsa's Team",
     "number of players": 1
 }
