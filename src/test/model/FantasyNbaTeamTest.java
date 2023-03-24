@@ -84,5 +84,16 @@ public class FantasyNbaTeamTest {
         fantasyNbaTeam2.setFantasyTeamName("Test2");
         assertEquals("Test2", fantasyNbaTeam2.getFantasyTeamName());
     }
+    @Test
+    void removePlayerTest() {
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer1);
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2);
+        assertEquals(2, fantasyNbaTeam1.getPlayers().size());
+        assertTrue(fantasyNbaTeam1.getPlayers().contains(testPlayer1));
+        fantasyNbaTeam1.removePlayer(testPlayer1);
+        assertEquals(1, fantasyNbaTeam1.getPlayers().size());
+        assertFalse(fantasyNbaTeam1.getPlayers().contains(testPlayer1));
+        assertTrue(fantasyNbaTeam1.getPlayers().contains(testPlayer2));
+    }
 
 }
