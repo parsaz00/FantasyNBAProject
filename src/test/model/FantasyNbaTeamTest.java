@@ -141,5 +141,17 @@ public class FantasyNbaTeamTest {
         assertEquals(testPlayer3, fantasyNbaTeam1.getAssistsLeader());
 
     }
+    @Test
+    void getPlayersTest() {
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer1);
+        assertEquals(1, fantasyNbaTeam1.getPlayers().size());
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2);
+        assertEquals(2, fantasyNbaTeam1.getPlayers().size());
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer3);
+        assertEquals(3, fantasyNbaTeam1.getPlayers().size());
+        assertTrue(fantasyNbaTeam1.getPlayers().contains(testPlayer1));
+        assertTrue(fantasyNbaTeam1.getPlayers().contains(testPlayer2));
+        assertTrue(fantasyNbaTeam1.getPlayers().contains(testPlayer3));
+    }
 
 }
