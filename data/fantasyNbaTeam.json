@@ -1,12 +1,30 @@
 {
-    "players on team": [{
-        "rebounds": 0,
-        "jersey number": 6,
-        "assists": 0,
-        "name": "Lebron James",
-        "NBA team": "Lakers",
-        "points": 0
-    }],
-    "team name": "Parsa's Team",
-    "number of players": 1
+    "players on team": [
+        {
+            "rebounds": 2,
+            "jersey number": 1,
+            "assists": 11,
+            "name": "T1",
+            "NBA team": "T1",
+            "points": 101
+        },
+        {
+            "rebounds": 10,
+            "jersey number": 2,
+            "assists": 1,
+            "name": "T2",
+            "NBA team": "T@",
+            "points": 1
+        },
+        {
+            "rebounds": 1,
+            "jersey number": 3,
+            "assists": 1,
+            "name": "T3",
+            "NBA team": "T3",
+            "points": 10
+        }
+    ],
+    "team name": "T1",
+    "number of players": 3
 }

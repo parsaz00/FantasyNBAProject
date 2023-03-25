@@ -13,7 +13,7 @@ public class FantasyNbaTeam implements Writeable {
     public static final int MAX_NUM_PLAYERS = 12;
     private String fantasyTeam;
     private int numberOfPlayers;
-    private ArrayList<Player> playersOnTeam;
+    private final ArrayList<Player> playersOnTeam;
 
     // REQUIRES: fantasyTeamName has non-zero length
     // EFFECTS: creates a new fantasy team, with fantasy team name set to fantasyTeamName and
@@ -72,15 +72,39 @@ public class FantasyNbaTeam implements Writeable {
         return playersOnFTeam;
     }
 
-    // MODIFIES: this
-    // EFFECTS: removes player from team
-    public void removePlayer(Player player) {
-        for (Player player1: this.playersOnTeam) {
-            if (player1.getName().equals(player.getName())) {
-                this.playersOnTeam.remove(player);
+    // EFFECTS: Returns the player with the most points on the team
+    public Player getPointsLeader() {
+        Player pointsLeader = this.playersOnTeam.get(0);
+        for (Player player : this.playersOnTeam) {
+            if (player.getPoints() >= pointsLeader.getPoints()) {
+                pointsLeader = player;
             }
         }
+        return pointsLeader;
     }
+
+    // EFFECTS: Returns the player with the most rebounds on the team
+    public Player getReboundsLeader() {
+        Player reboundLeader = this.playersOnTeam.get(0);
+        for (Player player : this.playersOnTeam) {
+            if (player.getRebounds() >= reboundLeader.getRebounds()) {
+                reboundLeader = player;
+            }
+        }
+        return reboundLeader;
+    }
+
+    // EFFECTS: Returns the player with the most assists on the team
+    public Player getAssistsLeader() {
+        Player assistsLeader = this.playersOnTeam.get(0);
+        for (Player player : this.playersOnTeam) {
+            if (player.getAssists() >= assistsLeader.getAssists()) {
+                assistsLeader = player;
+            }
+        }
+        return assistsLeader;
+    }
+
 
     // REQUIRES: name has to have a string-length > 0
     // MODIFIES: this

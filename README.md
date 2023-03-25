@@ -36,6 +36,15 @@ allow users to improve their NBA fantasy experience.
 * As a user, I want to be able to look at the statistics for a player on my Fantasy Team. 
 * As a user, I want to be able to save my Fantasy team, including all the players on it, with their stats
 * As a user, I want to be able to load a previously saved Fantasy team, and have access to all data I had previously entered
+* As a user, I want to be able to view the total stats for a player up to a specific date
+* As a user, I want to be able to view the statistical leader for Points, Rebounds and(or) Assists for my team 
+
+## Instructions for Grader
+* You can generate the first required action related to adding X's to a Y by clicking the button "Create Fantasy Team", creating your NBA fantasy team, and then clicking the button "Add a player to your fantasy team"
+* You can generate the second required action related to adding X's to a Y by clicking the button "Add a player to your fantasy team" twice, creating two different players. Then you press "Add Statistics for your Player" button twice, and add statistics for your two players, respectively, on each button press. Ensure that they have different values for at least one of the statistics (Points, Rebounds or Assists). Then you press the button "View Statistical Leaders on Your Team", and enter the statistical category you want to see the leader for. 
+* You can locate my visual component by creating a fantasy NBA team and viewing the icons for each button once you arrive at the Fantasy Team Frame. You can further view visual components by pressing the button "View players on your team" or "Add Statistics for your Player". You can also view another visual component when you return to the home screen by pressing the button "Return to home screen".
+* You can save the state of my application by pressing the button "Create Fantasy Team", and once you are inside the Fantasy Team Frame, pressing the button "Save your Fantasy Team"
+* * You can reload the state of my application by pressing the button "Create Fantasy Team", and once you are inside the Fantasy Team Frame, pressing the button "Load your team"
 
 
   

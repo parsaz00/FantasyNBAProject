@@ -3,6 +3,8 @@ package model;
 import org.json.JSONObject;
 import persistence.Writeable;
 
+import java.util.Objects;
+
 // Represents an NBA player, having a name (first and last), a jersey number, NBA team
 //  and statistics: Points, Rebounds and Assists.
 public class Player implements Writeable {
@@ -112,6 +114,5 @@ public class Player implements Writeable {
         json.put("assists", assists);
         return json;
     }
-
 
 }

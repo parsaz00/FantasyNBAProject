@@ -85,15 +85,61 @@ public class FantasyNbaTeamTest {
         assertEquals("Test2", fantasyNbaTeam2.getFantasyTeamName());
     }
     @Test
-    void removePlayerTest() {
+    void getPointsLeaderTest() {
+        testPlayer1.addPoints(8);
+        testPlayer2.addPoints(10);
+        testPlayer3.addPoints(1);
         fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer1);
         fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2);
-        assertEquals(2, fantasyNbaTeam1.getPlayers().size());
-        assertTrue(fantasyNbaTeam1.getPlayers().contains(testPlayer1));
-        fantasyNbaTeam1.removePlayer(testPlayer1);
-        assertEquals(1, fantasyNbaTeam1.getPlayers().size());
-        assertFalse(fantasyNbaTeam1.getPlayers().contains(testPlayer1));
-        assertTrue(fantasyNbaTeam1.getPlayers().contains(testPlayer2));
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer3);
+        assertEquals(testPlayer2, fantasyNbaTeam1.getPointsLeader());
+        testPlayer1.addPoints(100);
+        testPlayer2.addPoints(10);
+        testPlayer3.addPoints(1);
+        assertEquals(testPlayer1, fantasyNbaTeam1.getPointsLeader());
+        testPlayer1.addPoints(1);
+        testPlayer2.addPoints(1);
+        testPlayer3.addPoints(1000);
+        assertEquals(testPlayer3, fantasyNbaTeam1.getPointsLeader());
+
+    }
+    @Test
+    void getReboundsLeaderTest() {
+        testPlayer1.addRebounds(8);
+        testPlayer2.addRebounds(10);
+        testPlayer3.addRebounds(1);
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer1);
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2);
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer3);
+        assertEquals(testPlayer2, fantasyNbaTeam1.getReboundsLeader());
+        testPlayer1.addRebounds(100);
+        testPlayer2.addRebounds(10);
+        testPlayer3.addRebounds(1);
+        assertEquals(testPlayer1, fantasyNbaTeam1.getReboundsLeader());
+        testPlayer1.addRebounds(1);
+        testPlayer2.addRebounds(1);
+        testPlayer3.addRebounds(1000);
+        assertEquals(testPlayer3, fantasyNbaTeam1.getReboundsLeader());
+    }
+
+    @Test
+    void getAssistsLeaderTest() {
+        testPlayer1.addAssists(8);
+        testPlayer2.addAssists(10);
+        testPlayer3.addAssists(1);
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer1);
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer2);
+        fantasyNbaTeam1.addPlayerToFantasyTeam(testPlayer3);
+        assertEquals(testPlayer2, fantasyNbaTeam1.getAssistsLeader());
+        testPlayer1.addAssists(100);
+        testPlayer2.addAssists(10);
+        testPlayer3.addAssists(1);
+        assertEquals(testPlayer1, fantasyNbaTeam1.getAssistsLeader());
+        testPlayer1.addAssists(1);
+        testPlayer2.addAssists(1);
+        testPlayer3.addAssists(1000);
+        assertEquals(testPlayer3, fantasyNbaTeam1.getAssistsLeader());
+
     }
 
 }

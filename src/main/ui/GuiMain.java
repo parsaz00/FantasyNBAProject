@@ -6,7 +6,6 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.imageio.ImageIO;
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,7 +18,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-
+// Fantasy NBA GUI application
 public class GuiMain extends JFrame {
     private static final int WIDTH = 700;
     private static final int HEIGHT = 800;
@@ -32,10 +31,11 @@ public class GuiMain extends JFrame {
     private static final String JSON_STORE = "./data/fantasyNbaTeam.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
-    private Map<String, String> playerStats = new HashMap<>();
+    private final Map<String, String> playerStats = new HashMap<>();
 
-    // EFFECTS: constructs GUI pane
-
+    // MODIFIES: this
+    // EFFECTS: constructs GUI pane. If any of the button icons fail to load, or file path cannot be found, throws
+    //          IOException
     public GuiMain() throws IOException {
         try {
             setUp();
@@ -44,17 +44,14 @@ public class GuiMain extends JFrame {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets up the home screen for the GUI for the Fantasy NBA Team. If URL is invalid, throws IOException.
+    //          If the gif is interrupted when loading, throws InterruptedException
     public void setUp() throws IOException, InterruptedException {
-        homeFrame = new JFrame("Fantasy NBA Application");
-        homeFrame.setVisible(true);
-        homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        homeFrame.setSize(WIDTH, HEIGHT);
-        homePanel = new JPanel(new GridLayout(4, 1));
-        homePanel.setBackground(Color.cyan);
-        homeFrame.add(homePanel);
-        homePanelButtonSetup();
+        homeScreenSetup();
+        addFantasyTeamButtonSetup();
+        addPlayerButtonSetUp();
         homePanel.add((homePicture()));
-        //homePanel.add(homePanelImageDisplay());
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         if (this.fantasyNbaTeam != null) {
@@ -65,6 +62,21 @@ public class GuiMain extends JFrame {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates Frame and Panel for the home screen GUI display
+    private void homeScreenSetup() {
+        this.homeFrame = new JFrame("Fantasy NBA Application");
+        this.homeFrame.setVisible(true);
+        this.homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.homeFrame.setSize(WIDTH, HEIGHT);
+        this.homePanel = new JPanel(new GridLayout(4, 1));
+        this.homePanel.setBackground(Color.cyan);
+        this.homeFrame.add(homePanel);
+    }
+
+    // SOURCE: https://stackoverflow.com/questions/26474909/gif-not-playing-in-jframe
+    // EFFECTS: Creates the gif to be displayed on the home screen. If URL is invalid, throws IOException.
+    //          If the gif is interrupted when loading, throws InterruptedException
     public JLabel homePicture() throws IOException, InterruptedException {
         URL url = new URL("https://media.tenor.com/nC2TXxXn1Y4AAAAi/spurs-bling.gif");
         Image image = Toolkit.getDefaultToolkit().createImage(url).getScaledInstance(200, 200,
@@ -78,47 +90,52 @@ public class GuiMain extends JFrame {
         return homeLabel;
     }
 
+    // REQUIRES: this.fantasyNbaTeam != null
+    // MODIFIES: this
+    // EFFECTS: disposes of the home display frame, and generates the Fantasy Team frame. (User presses it to return
+    //          to the fantasy screen if they are on the home screen
     public void fantasyScreenButtonMethod(JButton button) {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    homeFrame.dispose();
                     fantasyTeamFrame();
                 } catch (IOException ex) {
                     System.out.println("Failed to load fantasy team!");
+                    JOptionPane.showMessageDialog(homePanel, "Failed to load fantasy team, please try again.",
+                            "Error Message", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
     }
 
-//    public JLabel homePanelImageDisplay() throws IOException {
-//        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/basketball.png"));
-//        Image image = bufferedImage.getScaledInstance(100, 100, Image.SCALE_DEFAULT);
-//        ImageIcon imageIcon = new ImageIcon(image);
-//        JLabel basketballPic = new JLabel();
-//        basketballPic.setIcon(imageIcon);
-//        return basketballPic;
-//    }
 
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
-    public void homePanelButtonSetup() {
+    // EFFECTS: Creates button to create a fantasy team, and when pressed, disposes of home frame and takes user
+    //          to the fantasy frame
+    public void addFantasyTeamButtonSetup() {
         JButton createFantasyTeam = new JButton("Create Fantasy Team");
         createFantasyTeam.setBackground(Color.blue);
         homePanel.add(createFantasyTeam);
-        JButton createPlayer = new JButton("Create a Fantasy Player");
-        homePanel.add(createPlayer);
         createFantasyTeam.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String input = JOptionPane.showInputDialog("Enter Fantasy Team Name");
                 fantasyNbaTeam = new FantasyNbaTeam(input);
                 try {
+                    homeFrame.dispose();
                     fantasyTeamFrame();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
+    }
+
+    // EFFECTS: creates the add player button, and instantiates a new Player with appropriate fields
+    public void addPlayerButtonSetUp() {
+        JButton createPlayer = new JButton("Create a Fantasy Player");
+        homePanel.add(createPlayer);
         createPlayer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,6 +147,12 @@ public class GuiMain extends JFrame {
         });
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the fantasy team frame and panel, with the following buttons:
+    //          "Add a player to your fantasy team"; "Add Statistics for your Player" ; "View players on your team"
+    //          "View a player's stats" ; "View Statistical Leaders on Your Team" ; "Save your Fantasy Team";
+    //          "Load your Fantasy Team"; "Return to home screen". If file path for button imageIcons doesn't exist
+    //           throws IOException.
     public void fantasyTeamFrame() throws IOException {
         fantasyTeamCreationFrame = new JFrame("Fantasy Team");
         fantasyTeamCreationFrame.setVisible(true);
@@ -141,17 +164,18 @@ public class GuiMain extends JFrame {
         addPlayerStats();
         viewPlayersOnTeam();
         viewPlayerStats();
-        removePlayerFromTeam();
+        viewStatisticsLeaders();
         saveOption();
         try {
             loadOption();
         } catch (InterruptedException e) {
             System.out.println("Load time error");
         }
-        // viewStatisticalInformation();
         returnHome();
     }
 
+    // EFFECTS: creates button to add player to your fantasy team. If button image icon cannot be found/read, throws
+    //          IOException
     public void addPlayerToTeam() throws IOException {
         JButton addPlayer = new JButton("Add a player to your fantasy team");
         ImageIcon imageIcon = getImageIcon("./data/images/plusSymbol.png");
@@ -169,14 +193,18 @@ public class GuiMain extends JFrame {
         });
     }
 
-    private ImageIcon getImageIcon(String filepPath) throws IOException {
-        BufferedImage bufferedImage = ImageIO.read(new File(filepPath));
+    // SOURCE: https://docs.oracle.com/javase/8/docs/api/index.html?java/awt/image/BufferedImage.html
+    // EFFECTS: creates an image icon from filePath
+    private ImageIcon getImageIcon(String filePath) throws IOException {
+        BufferedImage bufferedImage = ImageIO.read(new File(filePath));
         Image image = bufferedImage.getScaledInstance(35, 35, Image.SCALE_DEFAULT);
         ImageIcon imageIcon = new ImageIcon(image);
         return imageIcon;
     }
 
 
+    // MODIFIES: this.fantasyNbaTeam
+    // EFFECTS: adds a player to your fantasy NBA team
     public void addPlayerToFantasyTeam() {
         String playerName = JOptionPane.showInputDialog("Enter Player Name");
         String playerJerseyNumber = JOptionPane.showInputDialog("Enter Player's Jersey Number");
@@ -185,6 +213,9 @@ public class GuiMain extends JFrame {
         fantasyNbaTeam.addPlayerToFantasyTeam(player);
     }
 
+    // MODIFIES: this.fantasyTeamPanel
+    // EFFECTS: creates a button to add statistics for a player. If the button icon file cannot be found, throws a
+    //          IOException
     public void addPlayerStats() throws IOException {
         JButton addStats = new JButton("Add Statistics for your Player");
         fantasyTeamPanel.add(addStats);
@@ -199,6 +230,9 @@ public class GuiMain extends JFrame {
         });
     }
 
+    // MODIFIES: JButton addStats
+    // EFFECTS: creates teh ActionListener even for the addStats button. Stores player stats (points rebounds and
+    //          assists) in a map, with the player name and the date of the stat line as the key.
     public void addPlayerStatsButtonMethod() {
         String playerNameInput = JOptionPane.showInputDialog("Enter Player Name You Want to Add Stats For");
         String dateOfStatInput = JOptionPane.showInputDialog("Enter Date:  "
@@ -222,8 +256,13 @@ public class GuiMain extends JFrame {
         } catch (IOException e) {
             System.out.println("Failed to load display");
         }
-
     }
+
+    // MODIFIES: this
+    // EFFECTS: instantiates the statsAddedFrame for the GUI. Displays a message indicating that the player's stats
+    //          have successfully been added. Creates a JButton that, when pressed, disposes of the statsAddedFrame
+    //          and returns the user to the fantasy frame. If the basketball player image file cannot be located or
+    //          loaded, throws IOException
 
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void playerStatsAddedDisplay() throws IOException {
@@ -247,16 +286,17 @@ public class GuiMain extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     fantasyTeamFrame();
-                    statsAddedFrame.setVisible(false);
+                    statsAddedFrame.dispose();
                 } catch (IOException ex) {
                     System.out.println("Failed to load fantasy screen");
                 }
             }
         });
-
     }
 
-
+    // MODIFIES: this.fantasyTeamPanel
+    // EFFECTS: creates button to view the players on the current fantasy nba team. If files fail to load, throws
+    //          IOException
     public void viewPlayersOnTeam() throws IOException {
         JButton viewPlayers = new JButton("View players on your team");
         fantasyTeamPanel.add(viewPlayers);
@@ -264,24 +304,18 @@ public class GuiMain extends JFrame {
         viewPlayers.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                List<String> playersOnTeam = fantasyNbaTeam.getPlayersOnTeam();
-//                StringBuilder playersOnTeamString = new StringBuilder();
-//                for (String player : playersOnTeam) {
-//                    playersOnTeamString.append(player).append(". ");
-//                }
-//                JOptionPane.showMessageDialog(fantasyTeamPanel, playersOnTeamString, "Players on Your Team",
-//                        JOptionPane.INFORMATION_MESSAGE);
                 try {
                     viewPlayersDisplay();
                 } catch (IOException ex) {
                     System.out.println("Failed to load display");
                 }
-
-
             }
         });
     }
 
+    // SOURCE: https://docs.oracle.com/javase/8/docs/api/index.html?java/awt/image/BufferedImage.html
+    // MODIFIES: button
+    // EFFECTS: adds an image icon to the button
     public JButton addIconForViewPlayer(JButton button) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(new File("./data/images/viewPlayerOnTeamIcon.png"));
         Image image = bufferedImage.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
@@ -290,6 +324,10 @@ public class GuiMain extends JFrame {
         return button;
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the method for the viewPlayer JButton. Displays players currently on the fantasy team.
+    //          Instantiates playerDisplay and displays the current players on the roster. Throws IOException if icon
+    //          cannot be found/loaded.
     public void viewPlayersDisplay() throws IOException {
         playersDisplay = new JFrame();
         playersDisplay.setVisible(true);
@@ -303,6 +341,8 @@ public class GuiMain extends JFrame {
         playerDisplayPanel.add(returnToFantasyScreen());
     }
 
+    // EFFECTS: creates the method for the returnToFantasyScreen button in this.playerDisplay. Returns user to the
+    //          fantasyTeam display and disposes the playersDisplay.
     public JButton returnToFantasyScreen() {
         JButton returnToFantasyScreenButton = new JButton("Return to Fantasy Screen");
         returnToFantasyScreenButton.addActionListener(new ActionListener() {
@@ -310,7 +350,7 @@ public class GuiMain extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     fantasyTeamFrame();
-                    playersDisplay.setVisible(false);
+                    playersDisplay.dispose();
                 } catch (IOException ex) {
                     System.out.println("Failed to return home");
                 }
@@ -319,6 +359,9 @@ public class GuiMain extends JFrame {
         return returnToFantasyScreenButton;
     }
 
+    // SOURCE: https://docs.oracle.com/javase/8/docs/api/index.html?java/awt/image/BufferedImage.html
+    // MODIFIES: this.playerDisplay
+    // EFFECTS: adds labels to this.playerDisplay
     public JLabel createPlayerLabel(String name) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(new File("./data/images/basketball.png"));
         Image image = bufferedImage.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
@@ -328,6 +371,9 @@ public class GuiMain extends JFrame {
 
     }
 
+    // SOURCE: https://docs.oracle.com/javase/8/docs/api/index.html?java/awt/image/BufferedImage.html
+    // EFFECTS: Creates JButton that allows user to view player statistics. If the icon for the button cannot load,
+    //          throws IOException.
     public void viewPlayerStats() throws IOException {
         JButton viewPlayerStats = new JButton("View a player's stats");
         fantasyTeamPanel.add(viewPlayerStats);
@@ -344,33 +390,57 @@ public class GuiMain extends JFrame {
                         + " Example: Lebron James 12/23/2023");
                 JOptionPane.showMessageDialog(fantasyTeamPanel, playerStats.get(keyNameInput),
                         "Player's statistics", JOptionPane.INFORMATION_MESSAGE);
-//                Player playa = fantasyNbaTeam.findPlayerOnTeam(playerNameInput);
-//                String playerStats = (playa.getName() + " Points: " + playa.getPoints() + " Rebounds: "
-//                        + playa.getRebounds() + " Assists: " + playa.getAssists());
-//                JOptionPane.showMessageDialog(fantasyTeamPanel, playerStats, (playa.getName() + "'s Statistics"),
-//                        JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }
 
-    public void removePlayerFromTeam() {
-        JButton removePlayer = new JButton("Remove Player");
-        fantasyTeamPanel.add(removePlayer);
-        removePlayer.addActionListener(new ActionListener() {
+    // SOURCE: https://docs.oracle.com/javase/8/docs/api/index.html?java/awt/image/BufferedImage.html
+    // EFFECTS: Creates button to view statistical leaders for points, rebounds or assists on the fantasy team.
+    //          Throws IOException if file for button icon cannot be found.
+    public void viewStatisticsLeaders() throws IOException {
+        JButton viewStatsLeaders = new JButton("View Statistical Leaders on Your Team");
+        fantasyTeamPanel.add(viewStatsLeaders);
+        BufferedImage bufferedImage = ImageIO.read(new File("./data/images/leaderIcon.png"));
+        Image image = bufferedImage.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+        ImageIcon imageIcon = new ImageIcon(image);
+        viewStatsLeaders.setIcon(imageIcon);
+        viewStatsLeaders.setPreferredSize(new Dimension(50,50));
+        viewStatsLeaders.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String removePlayerName = JOptionPane.showInputDialog("Which player would you "
-                        + "like to remove from your team?");
-                Player playerToRemove;
-                for (Player player: fantasyNbaTeam.getPlayers()) {
-                    if (player.getName().equals(removePlayerName)) {
-                        fantasyNbaTeam.removePlayer(player);
-                    }
-                }
+                String statisticOfInterest = JOptionPane.showInputDialog("Which leader do you want to see: "
+                        + "Points? Rebounds? Assists?");
+                displayStatisticsLeader(statisticOfInterest);
             }
         });
     }
 
+    // EFFECTS: displays statistical leader for either points, rebounds, or assists based on user input
+    public void displayStatisticsLeader(String statisticOfInterest) {
+        Player statLeader;
+        if (statisticOfInterest.equals("Points")) {
+            statLeader = fantasyNbaTeam.getPointsLeader();
+            JOptionPane.showMessageDialog(fantasyTeamPanel, "The points leader is: "
+                            + statLeader.getName() + " with " + statLeader.getPoints() + " points.", "Points Leader",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+        if (statisticOfInterest.equals("Rebounds")) {
+            statLeader = fantasyNbaTeam.getReboundsLeader();
+            JOptionPane.showMessageDialog(fantasyTeamPanel, "The rebounds leader is: "
+                    + statLeader.getName() + " with " + statLeader.getRebounds()
+                    + " rebounds.", "Rebounds Leader", JOptionPane.INFORMATION_MESSAGE);
+        }
+        if (statisticOfInterest.equals("Assists")) {
+            statLeader = fantasyNbaTeam.getAssistsLeader();
+            JOptionPane.showMessageDialog(fantasyTeamPanel, "The assists leader is: "
+                    + statLeader.getName() + " with " + statLeader.getAssists()
+                    + " assists.", "Assists Leader", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    // SOURCE: https://docs.oracle.com/javase/8/docs/api/index.html?java/awt/image/BufferedImage.html
+    //SOURCE: JsonSerializationDemo CPSC 210
+    // EFFECTS: saves the fantasy NBA team to file
     public void saveOption() throws IOException {
         JButton save = new JButton("Save your Fantasy Team");
         fantasyTeamPanel.add(save);
@@ -397,10 +467,14 @@ public class GuiMain extends JFrame {
     }
 
     // SOURCE: https://stackoverflow.com/questions/26474909/gif-not-playing-in-jframe
+    // SOURCE: JsonSerializationDemo CPSC 210
+    // MODIFIES: this
+    // EFFECTS: loads fantasy NBA team from file
     public void loadOption() throws IOException, InterruptedException {
         JButton load = new JButton("Load your team");
         fantasyTeamPanel.add(load);
-        URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif");
+        URL url = new
+                URL("https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif");
         Image image = Toolkit.getDefaultToolkit().createImage(url).getScaledInstance(35, 35,
                 Image.SCALE_DEFAULT);
         MediaTracker mediaTracker = new MediaTracker(this);
@@ -422,7 +496,9 @@ public class GuiMain extends JFrame {
         });
     }
 
-
+    // MODIFIES this:
+    // EFFECTS: creates JButton to return to home screen. Throws IOException if file for Button label cannot be found or
+    //          loaded.
     public void returnHome() throws IOException {
         JButton goHome = new JButton("Return to home screen");
         fantasyTeamPanel.add(goHome);
@@ -434,8 +510,8 @@ public class GuiMain extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    fantasyTeamCreationFrame.dispose();
                     setUp();
-                    fantasyTeamCreationFrame.setVisible(false);
                 } catch (IOException ex) {
                     System.out.println("Unable to load image");
                 } catch (InterruptedException ex) {
