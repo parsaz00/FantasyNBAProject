@@ -44,9 +44,10 @@ public class GuiMain extends JFrame {
         }
     }
 
+    // SOURCE: https://www.java67.com/2018/03/a-simple-example-to-check-if-file-is-empty-in-java.html#:~:text=Well%2C%20it's%20pretty%20easy%20to,the%20file%20doesn't%20exist.
     // MODIFIES: this
     // EFFECTS: sets up the home screen for the GUI for the Fantasy NBA Team. If URL is invalid, throws IOException.
-    //          If the gif is interrupted when loading, throws InterruptedException
+    //          If the gif is interrupted when loading, throws InterruptedException.
     public void setUp() throws IOException, InterruptedException {
         homeScreenSetup();
         addFantasyTeamButtonSetup();
@@ -54,22 +55,33 @@ public class GuiMain extends JFrame {
         homePanel.add((homePicture()));
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
+        File loadFile = new File("./data/fantasyNbaTeam.json");
         if (this.fantasyNbaTeam != null) {
-            JButton fantasyScreen = new JButton("Fantasy Team Screen ");
-            fantasyScreenButtonMethod(fantasyScreen);
-            homePanel.add(fantasyScreen);
+            createReturnToFantasyScreen();
         }
+        if (loadFile.length() >= 5) {
+            try {
+                homePanel.add(loadOption());
+            } catch (InterruptedException e) {
+                System.out.println("Load time error");
+            }
+        }
+        this.homeFrame.setVisible(true);
+    }
 
+    private void createReturnToFantasyScreen() {
+        JButton fantasyScreen = new JButton("Fantasy Team Screen");
+        fantasyScreenButtonMethod(fantasyScreen);
+        homePanel.add(fantasyScreen);
     }
 
     // MODIFIES: this
     // EFFECTS: creates Frame and Panel for the home screen GUI display
     private void homeScreenSetup() {
         this.homeFrame = new JFrame("Fantasy NBA Application");
-        this.homeFrame.setVisible(true);
         this.homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.homeFrame.setSize(WIDTH, HEIGHT);
-        this.homePanel = new JPanel(new GridLayout(4, 1));
+        this.homePanel = new JPanel(new GridLayout(5, 1));
         this.homePanel.setBackground(Color.cyan);
         this.homeFrame.add(homePanel);
     }
@@ -166,11 +178,11 @@ public class GuiMain extends JFrame {
         viewPlayerStats();
         viewStatisticsLeaders();
         saveOption();
-        try {
-            loadOption();
-        } catch (InterruptedException e) {
-            System.out.println("Load time error");
-        }
+//        try {
+//            loadOption();
+//        } catch (InterruptedException e) {
+//            System.out.println("Load time error");
+//        }
         returnHome();
     }
 
@@ -404,7 +416,7 @@ public class GuiMain extends JFrame {
         Image image = bufferedImage.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon imageIcon = new ImageIcon(image);
         viewStatsLeaders.setIcon(imageIcon);
-        viewStatsLeaders.setPreferredSize(new Dimension(50,50));
+        viewStatsLeaders.setPreferredSize(new Dimension(50, 50));
         viewStatsLeaders.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -418,19 +430,19 @@ public class GuiMain extends JFrame {
     // EFFECTS: displays statistical leader for either points, rebounds, or assists based on user input
     public void displayStatisticsLeader(String statisticOfInterest) {
         Player statLeader;
-        if (statisticOfInterest.equals("Points")) {
+        if (statisticOfInterest.equals("Points") || statisticOfInterest.equals("points")) {
             statLeader = fantasyNbaTeam.getPointsLeader();
             JOptionPane.showMessageDialog(fantasyTeamPanel, "The points leader is: "
                             + statLeader.getName() + " with " + statLeader.getPoints() + " points.", "Points Leader",
                     JOptionPane.INFORMATION_MESSAGE);
         }
-        if (statisticOfInterest.equals("Rebounds")) {
+        if (statisticOfInterest.equals("Rebounds") || statisticOfInterest.equals("rebounds")) {
             statLeader = fantasyNbaTeam.getReboundsLeader();
             JOptionPane.showMessageDialog(fantasyTeamPanel, "The rebounds leader is: "
                     + statLeader.getName() + " with " + statLeader.getRebounds()
                     + " rebounds.", "Rebounds Leader", JOptionPane.INFORMATION_MESSAGE);
         }
-        if (statisticOfInterest.equals("Assists")) {
+        if (statisticOfInterest.equals("Assists") || statisticOfInterest.equals("assists")) {
             statLeader = fantasyNbaTeam.getAssistsLeader();
             JOptionPane.showMessageDialog(fantasyTeamPanel, "The assists leader is: "
                     + statLeader.getName() + " with " + statLeader.getAssists()
@@ -470,9 +482,9 @@ public class GuiMain extends JFrame {
     // SOURCE: JsonSerializationDemo CPSC 210
     // MODIFIES: this
     // EFFECTS: loads fantasy NBA team from file
-    public void loadOption() throws IOException, InterruptedException {
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    public JButton loadOption() throws IOException, InterruptedException {
         JButton load = new JButton("Load your team");
-        fantasyTeamPanel.add(load);
         URL url = new
                 URL("https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif");
         Image image = Toolkit.getDefaultToolkit().createImage(url).getScaledInstance(35, 35,
@@ -486,14 +498,19 @@ public class GuiMain extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    if (fantasyNbaTeam == null) {
+                        createReturnToFantasyScreen();
+                    }
                     fantasyNbaTeam = jsonReader.read();
                     JOptionPane.showMessageDialog(fantasyTeamPanel, "Team has been successfully loaded!",
                             "Load Message", JOptionPane.INFORMATION_MESSAGE);
+                    homeFrame.setVisible(true);
                 } catch (IOException ioException) {
                     System.out.println("Failed to read from file: " + JSON_STORE);
                 }
             }
         });
+        return load;
     }
 
     // MODIFIES this:
