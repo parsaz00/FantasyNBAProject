@@ -35,7 +35,7 @@ public class GuiMain extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: constructs GUI pane. If any of the button icons fail to load, or file path cannot be found, throws
-    //          IOException
+    //          IOException. Catches InterruptedException if any of the GIFS in the GUI fail to load.
     public GuiMain() throws IOException {
         try {
             setUp();
@@ -47,7 +47,9 @@ public class GuiMain extends JFrame {
     // SOURCE: https://www.java67.com/2018/03/a-simple-example-to-check-if-file-is-empty-in-java.html#:~:text=Well%2C%20it's%20pretty%20easy%20to,the%20file%20doesn't%20exist.
     // MODIFIES: this
     // EFFECTS: sets up the home screen for the GUI for the Fantasy NBA Team. If URL is invalid, throws IOException.
-    //          If the gif is interrupted when loading, throws InterruptedException.
+    //          If a fantasy NBA team has been created or loaded from a file, will display a button to return to the
+    //          Fantasy Screen. If there is a valid Saved JSon File, will display a load button to load the Fantasy
+    //          Team. If the gif is interrupted when loading, throws InterruptedException. Catches InterruptedException
     public void setUp() throws IOException, InterruptedException {
         homeScreenSetup();
         addFantasyTeamButtonSetup();
@@ -63,12 +65,14 @@ public class GuiMain extends JFrame {
             try {
                 homePanel.add(loadOption());
             } catch (InterruptedException e) {
-                System.out.println("Load time error");
+                System.out.println("Gif was interrupted");
             }
         }
         this.homeFrame.setVisible(true);
     }
 
+    // MODIFIES: this.homePanel
+    // EFFECTS: create JButton to return to Fantasy Screen from Home Screen
     private void createReturnToFantasyScreen() {
         JButton fantasyScreen = new JButton("Fantasy Team Screen");
         fantasyScreenButtonMethod(fantasyScreen);
@@ -97,15 +101,13 @@ public class GuiMain extends JFrame {
         mediaTracker.addImage(image, 0);
         mediaTracker.waitForAll();
         ImageIcon imageIcon = new ImageIcon(image);
-        JLabel homeLabel = new JLabel(imageIcon, SwingConstants.CENTER);
-
-        return homeLabel;
+        return new JLabel(imageIcon, SwingConstants.CENTER);
     }
 
     // REQUIRES: this.fantasyNbaTeam != null
     // MODIFIES: this
     // EFFECTS: disposes of the home display frame, and generates the Fantasy Team frame. (User presses it to return
-    //          to the fantasy screen if they are on the home screen
+    //          to the fantasy screen if they are on the home screen)
     public void fantasyScreenButtonMethod(JButton button) {
         button.addActionListener(new ActionListener() {
             @Override
@@ -124,7 +126,8 @@ public class GuiMain extends JFrame {
 
 
     // EFFECTS: Creates button to create a fantasy team, and when pressed, disposes of home frame and takes user
-    //          to the fantasy frame
+    //          to the fantasy frame. Catches IOException if fantasyTeamFrame() call results in a failure to load
+    //          JButton icons.
     public void addFantasyTeamButtonSetup() {
         JButton createFantasyTeam = new JButton("Create Fantasy Team");
         createFantasyTeam.setBackground(Color.blue);
@@ -138,7 +141,7 @@ public class GuiMain extends JFrame {
                     homeFrame.dispose();
                     fantasyTeamFrame();
                 } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    System.out.println("Failed to load icons for buttons");
                 }
             }
         });
@@ -178,11 +181,6 @@ public class GuiMain extends JFrame {
         viewPlayerStats();
         viewStatisticsLeaders();
         saveOption();
-//        try {
-//            loadOption();
-//        } catch (InterruptedException e) {
-//            System.out.println("Load time error");
-//        }
         returnHome();
     }
 
@@ -210,8 +208,7 @@ public class GuiMain extends JFrame {
     private ImageIcon getImageIcon(String filePath) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(new File(filePath));
         Image image = bufferedImage.getScaledInstance(35, 35, Image.SCALE_DEFAULT);
-        ImageIcon imageIcon = new ImageIcon(image);
-        return imageIcon;
+        return new ImageIcon(image);
     }
 
 
@@ -243,8 +240,9 @@ public class GuiMain extends JFrame {
     }
 
     // MODIFIES: JButton addStats
-    // EFFECTS: creates teh ActionListener even for the addStats button. Stores player stats (points rebounds and
-    //          assists) in a map, with the player name and the date of the stat line as the key.
+    // EFFECTS: creates the ActionListener even for the addStats button. Stores player stats (points rebounds and
+    //          assists) in a map, with the player name and the date of the stat line as the key. Catches IOException
+    //          if the JLabel icon for the display fails to load.
     public void addPlayerStatsButtonMethod() {
         String playerNameInput = JOptionPane.showInputDialog("Enter Player Name You Want to Add Stats For");
         String dateOfStatInput = JOptionPane.showInputDialog("Enter Date:  "
@@ -274,7 +272,7 @@ public class GuiMain extends JFrame {
     // EFFECTS: instantiates the statsAddedFrame for the GUI. Displays a message indicating that the player's stats
     //          have successfully been added. Creates a JButton that, when pressed, disposes of the statsAddedFrame
     //          and returns the user to the fantasy frame. If the basketball player image file cannot be located or
-    //          loaded, throws IOException
+    //          loaded, throws IOException, and action listener catches it.
 
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void playerStatsAddedDisplay() throws IOException {
@@ -308,7 +306,7 @@ public class GuiMain extends JFrame {
 
     // MODIFIES: this.fantasyTeamPanel
     // EFFECTS: creates button to view the players on the current fantasy nba team. If files fail to load, throws
-    //          IOException
+    //          IOException if Icon fails to load.
     public void viewPlayersOnTeam() throws IOException {
         JButton viewPlayers = new JButton("View players on your team");
         fantasyTeamPanel.add(viewPlayers);
@@ -345,7 +343,8 @@ public class GuiMain extends JFrame {
         playersDisplay.setVisible(true);
         playersDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         playersDisplay.setSize(WIDTH, HEIGHT);
-        JPanel playerDisplayPanel = new JPanel(new GridLayout(this.fantasyNbaTeam.getNumberOfPlayers() + 1, 1));
+        JPanel playerDisplayPanel =
+                new JPanel(new GridLayout(this.fantasyNbaTeam.getNumberOfPlayers() + 1, 1));
         playersDisplay.add(playerDisplayPanel);
         for (String player : this.fantasyNbaTeam.getPlayersOnTeam()) {
             playerDisplayPanel.add(createPlayerLabel(player));
@@ -354,7 +353,8 @@ public class GuiMain extends JFrame {
     }
 
     // EFFECTS: creates the method for the returnToFantasyScreen button in this.playerDisplay. Returns user to the
-    //          fantasyTeam display and disposes the playersDisplay.
+    //          fantasyTeam display and disposes the playersDisplay. Catches IOException if fantasy team frame
+    //          icons fail to load.
     public JButton returnToFantasyScreen() {
         JButton returnToFantasyScreenButton = new JButton("Return to Fantasy Screen");
         returnToFantasyScreenButton.addActionListener(new ActionListener() {
@@ -364,7 +364,7 @@ public class GuiMain extends JFrame {
                     fantasyTeamFrame();
                     playersDisplay.dispose();
                 } catch (IOException ex) {
-                    System.out.println("Failed to return home");
+                    System.out.println("Failed to load fantasy team frame icons");
                 }
             }
         });
@@ -378,8 +378,7 @@ public class GuiMain extends JFrame {
         BufferedImage bufferedImage = ImageIO.read(new File("./data/images/basketball.png"));
         Image image = bufferedImage.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
         ImageIcon imageIcon = new ImageIcon(image);
-        JLabel label = new JLabel(name, imageIcon, JLabel.CENTER);
-        return label;
+        return new JLabel(name, imageIcon, JLabel.CENTER);
 
     }
 
