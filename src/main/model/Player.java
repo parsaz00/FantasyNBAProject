@@ -27,6 +27,7 @@ public class Player implements Writeable {
         points = 0;
         rebounds = 0;
         assists = 0;
+        EventLog.getInstance().logEvent(new Event("A player " + playerName + " was created"));
     }
 
     // EFFECTS: returns the player's name
@@ -39,6 +40,7 @@ public class Player implements Writeable {
     // EFFECTS: sets the player's name to "name"
     public void setName(String name) {
         this.name = name;
+        EventLog.getInstance().logEvent(new Event("Players name was set to " + this.name));
     }
 
     // EFFECTS: returns the player's jersey number
@@ -51,6 +53,8 @@ public class Player implements Writeable {
     // EFFECTS: sets the player's jersey number to "number"
     public void setJerseyNumber(int number) {
         this.jerseyNumber = number;
+        EventLog.getInstance().logEvent(new Event("Jersey number " + this.getJerseyNumber()
+                + " was assigned to " + this.getName()));
     }
 
     // EFFECTS: returns the player's NBA team
@@ -63,6 +67,8 @@ public class Player implements Writeable {
     // EFFECTS: sets the player's NBA team to "teamName"
     public void setTeamName(String teamName) {
         this.nbaTeam = teamName;
+        EventLog.getInstance().logEvent(new Event("Team name for " + this.getName() + "was set to "
+                + this.getTeam()));
     }
 
 
@@ -86,6 +92,7 @@ public class Player implements Writeable {
     // EFFECTS: adds p to the player's current points
     public void addPoints(int p) {
         points += p;
+        EventLog.getInstance().logEvent(new Event("Points were added for " + this.name));
     }
 
     // REQUIRES: r >= 0
@@ -94,6 +101,7 @@ public class Player implements Writeable {
 
     public void addRebounds(int r) {
         rebounds += r;
+        EventLog.getInstance().logEvent(new Event("Rebounds were added for " + this.name));
     }
 
     // REQUIRES: a >= 0
@@ -101,6 +109,7 @@ public class Player implements Writeable {
     // EFFECTS: adds a to player's current assists
     public void addAssists(int a) {
         assists += a;
+        EventLog.getInstance().logEvent(new Event("Assists were added for " + this.name));
     }
 
     @Override
