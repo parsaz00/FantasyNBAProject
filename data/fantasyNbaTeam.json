@@ -1,30 +1,30 @@
 {
     "players on team": [
         {
-            "rebounds": 17,
+            "rebounds": 7,
             "jersey number": 6,
-            "assists": 17,
+            "assists": 7,
             "name": "Lebron James",
             "NBA team": "Lakers",
-            "points": 37
-        },
-        {
-            "rebounds": 100,
-            "jersey number": 3,
-            "assists": 10,
-            "name": "Anthony Davis",
-            "NBA team": "Lakers",
-            "points": 1
+            "points": 27
         },
         {
             "rebounds": 0,
-            "jersey number": 5,
+            "jersey number": 35,
             "assists": 0,
-            "name": "D'Angelo Russel ",
-            "NBA team": "Lakers",
+            "name": "Kevin Durant",
+            "NBA team": "Suns",
             "points": 0
+        },
+        {
+            "rebounds": 25,
+            "jersey number": 3,
+            "assists": 3,
+            "name": "Anthony Davis",
+            "NBA team": "Lakers",
+            "points": 30
         }
     ],
-    "team name": "Parsa's NBA Team",
+    "team name": "Parsa's Team",
     "number of players": 3
 }

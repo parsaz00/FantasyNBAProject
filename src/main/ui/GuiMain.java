@@ -1,5 +1,6 @@
 package ui;
 
+import model.EventLog;
 import model.FantasyNbaTeam;
 import model.Player;
 import persistence.JsonReader;
@@ -54,6 +55,7 @@ public class GuiMain extends JFrame {
         homeScreenSetup();
         addFantasyTeamButtonSetup();
         addPlayerButtonSetUp();
+        addExitButtonStepUp();
         homePanel.add((homePicture()));
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
@@ -147,6 +149,20 @@ public class GuiMain extends JFrame {
         });
     }
 
+    // EFFECTS: exits the GUI application and prints log of events to console
+    public void addExitButtonStepUp() {
+        JButton exitApp = new JButton("Exit App");
+        homePanel.add(exitApp);
+        exitApp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LogPrinter logPrinter = new LogPrinter();
+                logPrinter.printLog(EventLog.getInstance());
+                System.exit(0);
+            }
+        });
+    }
+
     // EFFECTS: creates the add player button, and instantiates a new Player with appropriate fields
     public void addPlayerButtonSetUp() {
         JButton createPlayer = new JButton("Create a Fantasy Player");
@@ -180,6 +196,7 @@ public class GuiMain extends JFrame {
         viewPlayersOnTeam();
         viewPlayerStats();
         viewStatisticsLeaders();
+        viewTotalStats();
         saveOption();
         returnHome();
     }
@@ -401,6 +418,23 @@ public class GuiMain extends JFrame {
                         + " Example: Lebron James 12/23/2023");
                 JOptionPane.showMessageDialog(fantasyTeamPanel, playerStats.get(keyNameInput),
                         "Player's statistics", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+    }
+
+    // EFFECTS: Creates button to view the total stats for a specified player.
+
+    public void viewTotalStats() {
+        JButton viewPlayersTotalStats = new JButton("View a Player's Total Stat Line");
+        fantasyTeamPanel.add(viewPlayersTotalStats);
+        viewPlayersTotalStats.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String playerToSee = JOptionPane.showInputDialog("Which player's statistics would you like to see?");
+                Player playerStats = fantasyNbaTeam.findPlayerOnTeam(playerToSee);
+                JOptionPane.showMessageDialog(fantasyTeamPanel,
+                        playerStats.getName() + " statistics. Points: " + playerStats.getPoints()
+                                + " Rebounds: " + playerStats.getRebounds() + " Assists: " + playerStats.getAssists());
             }
         });
     }

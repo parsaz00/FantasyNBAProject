@@ -22,6 +22,7 @@ public class FantasyNbaTeam implements Writeable {
         fantasyTeam = fantasyTeamName;
         numberOfPlayers = 0;
         playersOnTeam = new ArrayList<>();
+        EventLog.getInstance().logEvent(new Event("Fantasy NBA team " + this.fantasyTeam + " was created"));
     }
 
     // REQUIRES: p has to be a valid player that's already been created
@@ -33,6 +34,7 @@ public class FantasyNbaTeam implements Writeable {
         if (this.numberOfPlayers < MAX_NUM_PLAYERS) {
             this.playersOnTeam.add(p);
             numberOfPlayers += 1;
+            EventLog.getInstance().logEvent(new Event("Player was added to team"));
             return true;
         }
         return false;
@@ -43,9 +45,11 @@ public class FantasyNbaTeam implements Writeable {
     public Player findPlayerOnTeam(String playerName) {
         for (Player player : playersOnTeam) {
             if (Objects.equals(player.getName(), playerName)) {
+                EventLog.getInstance().logEvent(new Event(playerName + " was searched for and returned"));
                 return player;
             }
         }
+        EventLog.getInstance().logEvent(new Event("Could not find player, so null was returned"));
         return null;
     }
 
@@ -69,6 +73,7 @@ public class FantasyNbaTeam implements Writeable {
         for (Player playa : playersOnTeam) {
             playersOnFTeam.add(playa.getName());
         }
+        EventLog.getInstance().logEvent(new Event("Players on the Fantasy Team were returned"));
         return playersOnFTeam;
     }
 
@@ -80,6 +85,8 @@ public class FantasyNbaTeam implements Writeable {
                 pointsLeader = player;
             }
         }
+        EventLog.getInstance().logEvent(new Event("Points leader " + pointsLeader.getName()
+                + " was returned"));
         return pointsLeader;
     }
 
@@ -91,6 +98,8 @@ public class FantasyNbaTeam implements Writeable {
                 reboundLeader = player;
             }
         }
+        EventLog.getInstance().logEvent(new Event("Rebounds leader " + reboundLeader.getName()
+                + " was returned"));
         return reboundLeader;
     }
 
@@ -102,6 +111,9 @@ public class FantasyNbaTeam implements Writeable {
                 assistsLeader = player;
             }
         }
+        EventLog.getInstance().logEvent(new Event("Assists leader " + assistsLeader.getName()
+                + " was returned"));
+
         return assistsLeader;
     }
 
@@ -111,6 +123,8 @@ public class FantasyNbaTeam implements Writeable {
     // EFFECTS: sets the fantasy team name to name.
     public void setFantasyTeamName(String name) {
         this.fantasyTeam = name;
+        EventLog.getInstance().logEvent(new Event("Fantasy Team name was set to " + name));
+
     }
 
     @Override
