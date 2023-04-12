@@ -17,7 +17,8 @@ public class FantasyNbaTeam implements Writeable {
 
     // REQUIRES: fantasyTeamName has non-zero length
     // EFFECTS: creates a new fantasy team, with fantasy team name set to fantasyTeamName and
-    //          an empty roster (i.e., no players on the team), and numberOfPlayers set to zero.
+    //          an empty roster (i.e., no players on the team), and numberOfPlayers set to zero. Logs the creation
+    //          of the Fantasy NBA team.
     public FantasyNbaTeam(String fantasyTeamName) {
         fantasyTeam = fantasyTeamName;
         numberOfPlayers = 0;
@@ -30,6 +31,7 @@ public class FantasyNbaTeam implements Writeable {
     // EFFECTS: if the fantasy team has less than MAX_NUM_PLAYERS, add the (p)layer to the fantasy team, increments the
     //          number of players on the team by 1, and returns true. If the fantasy team has >= MAX_NUM_PLAYERS
     //          number of players, does NOT add the (p)layer and returns false.
+    //          Logs the player being added to the Fantasy Team.
     public boolean addPlayerToFantasyTeam(Player p) {
         if (this.numberOfPlayers < MAX_NUM_PLAYERS) {
             this.playersOnTeam.add(p);
@@ -41,7 +43,8 @@ public class FantasyNbaTeam implements Writeable {
     }
 
     // EFFECTS: returns the player based on the inputted playerName. If the player is NOT on the fantasy team, returns
-    //          null.
+    //          null. Logs the player being searched for if player can be found, and logs the fact that player could
+    //          not be found if null is returned
     public Player findPlayerOnTeam(String playerName) {
         for (Player player : playersOnTeam) {
             if (Objects.equals(player.getName(), playerName)) {
@@ -67,7 +70,7 @@ public class FantasyNbaTeam implements Writeable {
         return this.playersOnTeam;
     }
 
-    // EFFECTS: returns the names of the players on the fantasy team
+    // EFFECTS: returns the names of the players on the fantasy team. Logs player being returned
     public List<String> getPlayersOnTeam() {
         List<String> playersOnFTeam = new ArrayList<>();
         for (Player playa : playersOnTeam) {
@@ -77,7 +80,7 @@ public class FantasyNbaTeam implements Writeable {
         return playersOnFTeam;
     }
 
-    // EFFECTS: Returns the player with the most points on the team
+    // EFFECTS: Returns the player with the most points on the team. Logs the points leader being returned
     public Player getPointsLeader() {
         Player pointsLeader = this.playersOnTeam.get(0);
         for (Player player : this.playersOnTeam) {
@@ -90,7 +93,7 @@ public class FantasyNbaTeam implements Writeable {
         return pointsLeader;
     }
 
-    // EFFECTS: Returns the player with the most rebounds on the team
+    // EFFECTS: Returns the player with the most rebounds on the team. Logs the rebounds leader being returned
     public Player getReboundsLeader() {
         Player reboundLeader = this.playersOnTeam.get(0);
         for (Player player : this.playersOnTeam) {
@@ -103,7 +106,7 @@ public class FantasyNbaTeam implements Writeable {
         return reboundLeader;
     }
 
-    // EFFECTS: Returns the player with the most assists on the team
+    // EFFECTS: Returns the player with the most assists on the team. Logs the assists leader being returned
     public Player getAssistsLeader() {
         Player assistsLeader = this.playersOnTeam.get(0);
         for (Player player : this.playersOnTeam) {
@@ -120,7 +123,7 @@ public class FantasyNbaTeam implements Writeable {
 
     // REQUIRES: name has to have a string-length > 0
     // MODIFIES: this
-    // EFFECTS: sets the fantasy team name to name.
+    // EFFECTS: sets the fantasy team name to name. Logs name being set.
     public void setFantasyTeamName(String name) {
         this.fantasyTeam = name;
         EventLog.getInstance().logEvent(new Event("Fantasy Team name was set to " + name));

@@ -46,4 +46,40 @@ allow users to improve their NBA fantasy experience.
 * You can save the state of my application by pressing the button "Create Fantasy Team", and once you are inside the Fantasy Team Frame, pressing the button "Save your Fantasy Team"
 * You can reload the state of my application by pressing the button "Load your team" on the home screen, SO LONG AS you have a valid Fantasy Team that has already been saved. If there are no teams already saved, the load button will not appear, you will have to create a Fantasy Team, save it, and then when you return to the home screen by pressing "Return Home" the load button will be displayed (similarly, after saving, you can quit the application, re-run the GUI and since you saved a team, the load button will appear). 
 
+## Phase 4: Task 2
+* Wed Apr 12 11:57:10 PDT 2023
+* Fantasy NBA team Parsa's Fantasy NBA Team was created
+* Wed Apr 12 11:57:16 PDT 2023 
+* A player Lebron James was created 
+* Wed Apr 12 11:57:16 PDT 2023 
+* Player was added to team 
+* Wed Apr 12 11:57:27 PDT 2023 
+* A player Anthony Davis was created 
+* Wed Apr 12 11:57:27 PDT 2023 
+* Player was added to team 
+* Wed Apr 12 11:57:29 PDT 2023 
+* Players on the Fantasy Team were returned 
+* Wed Apr 12 11:57:41 PDT 2023 
+* Lebron James was searched for and returned 
+* Wed Apr 12 11:57:45 PDT 2023 
+* Points were added for Lebron James 
+* Wed Apr 12 11:57:45 PDT 2023 
+* Rebounds were added for Lebron James 
+* Wed Apr 12 11:57:45 PDT 2023 
+* Assists were added for Lebron James 
+* Wed Apr 12 11:57:50 PDT 2023 
+* Lebron James was searched for and returned 
+* Wed Apr 12 11:57:54 PDT 2023 
+* Points leader Lebron James was returned 
+* Wed Apr 12 11:58:03 PDT 2023 
+* Anthony Davis was searched for and returned 
+* Wed Apr 12 11:58:07 PDT 2023 
+* Points were added for Anthony Davis 
+* Wed Apr 12 11:58:07 PDT 2023 
+* Rebounds were added for Anthony Davis 
+* Wed Apr 12 11:58:07 PDT 2023 
+* Assists were added for Anthony Davis 
+* Wed Apr 12 11:58:10 PDT 2023 
+* Players on the Fantasy Team were returned
+
   

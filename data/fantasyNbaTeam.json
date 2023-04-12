@@ -9,22 +9,14 @@
             "points": 27
         },
         {
-            "rebounds": 0,
-            "jersey number": 35,
-            "assists": 0,
-            "name": "Kevin Durant",
-            "NBA team": "Suns",
-            "points": 0
-        },
-        {
-            "rebounds": 25,
+            "rebounds": 23,
             "jersey number": 3,
-            "assists": 3,
+            "assists": 2,
             "name": "Anthony Davis",
             "NBA team": "Lakers",
-            "points": 30
+            "points": 25
         }
     ],
-    "team name": "Parsa's Team",
-    "number of players": 3
+    "team name": "Parsa's Fantasy NBA Team",
+    "number of players": 2
 }

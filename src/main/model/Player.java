@@ -18,7 +18,8 @@ public class Player implements Writeable {
     /*
      * REQUIRES: playerName and teamName have non-zero length, jerseyNum >= 0, teamName is a current NBA team
      * EFFECTS: player name is set to playerName; jerseyNum is a positive integer assigned to a player; the NBA
-     *          team the player belongs to is set to nbaTeam, and points, rebounds, and assits are set to 0.
+     *          team the player belongs to is set to nbaTeam, and points, rebounds, and assits are set to 0. Logs
+     *          player being created.
      */
     public Player(String playerName, int jerseyNum, String teamName) {
         name = playerName;
@@ -37,7 +38,7 @@ public class Player implements Writeable {
 
     // REQUIRES: name length is > 0;
     // MODIFIES: this
-    // EFFECTS: sets the player's name to "name"
+    // EFFECTS: sets the player's name to "name". Logs that the player name was set to name.
     public void setName(String name) {
         this.name = name;
         EventLog.getInstance().logEvent(new Event("Players name was set to " + this.name));
@@ -50,14 +51,14 @@ public class Player implements Writeable {
 
     // REQUIRES: number >= 0;
     // MODIFIES: this
-    // EFFECTS: sets the player's jersey number to "number"
+    // EFFECTS: sets the player's jersey number to "number". Logs the jersey number being set.
     public void setJerseyNumber(int number) {
         this.jerseyNumber = number;
         EventLog.getInstance().logEvent(new Event("Jersey number " + this.getJerseyNumber()
                 + " was assigned to " + this.getName()));
     }
 
-    // EFFECTS: returns the player's NBA team
+    // EFFECTS: returns the player's NBA team. Logs the player's NBA team being set.
     public String getTeam() {
         return nbaTeam;
     }
@@ -89,7 +90,7 @@ public class Player implements Writeable {
 
     // REQUIRES: p >= 0
     // MODIFIES: this
-    // EFFECTS: adds p to the player's current points
+    // EFFECTS: adds p to the player's current points. Logs the points added.
     public void addPoints(int p) {
         points += p;
         EventLog.getInstance().logEvent(new Event("Points were added for " + this.name));
@@ -97,7 +98,7 @@ public class Player implements Writeable {
 
     // REQUIRES: r >= 0
     // MODIFIES: this
-    // EFFECTS: adds r to player's current rebounds
+    // EFFECTS: adds r to player's current rebounds. Logs the rebounds added.
 
     public void addRebounds(int r) {
         rebounds += r;
@@ -106,7 +107,7 @@ public class Player implements Writeable {
 
     // REQUIRES: a >= 0
     // MODIFIES: this
-    // EFFECTS: adds a to player's current assists
+    // EFFECTS: adds a to player's current assists. Logs the assists added.
     public void addAssists(int a) {
         assists += a;
         EventLog.getInstance().logEvent(new Event("Assists were added for " + this.name));

@@ -4,6 +4,7 @@ import model.Event;
 import model.EventLog;
 
 // A log printer that prints to the console
+// SOURCE: AlarmSystemUI CPSC 210
 public class LogPrinter {
 
     // EFFECTS: prints out all the logs as a string to the console
