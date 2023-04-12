@@ -82,4 +82,18 @@ allow users to improve their NBA fantasy experience.
 * Wed Apr 12 11:58:10 PDT 2023 
 * Players on the Fantasy Team were returned
 
+## Phase 4: Task 3
+
+Upon reflecting on the process to build out my Fantasy NBA application, there are a few refactoring decision I would
+make. To begin, I would reconstruct the FantasyTeam class to be an abstract class. Doing so would allow me to extend 
+my Fantasy Application outside the scope of just the NBA. By making the FantasyTeam class abstract, it would allow me to
+also incorporate other teams, such as NHL (hockey), MLB (baseball), and NFL (football). Another refactoring choice I 
+would make regards the GuiMain class. Examining my UML, there are too many fields that the class depends on. Specifically, 
+I have three JFrame and two JPanel fields. In refactoring, I would redesign this aspect so that those fields were worked 
+into one or more classes. Although it could be argued that this would increase the coupling, I would raise the 
+counterargument that it would SUBSTANTIALLY increase the cohesion. Right now, the GuiMain class is tasked with way too 
+much. It is responsible for creating and manipulating every single JFrame and JPanel in the application. By refactoring 
+these into one or more classes, the GuiMain would be a class just focused on creating the GUI, as opposed to also dealing
+with the setup and creation of all the components of the GUI. 
+
   
